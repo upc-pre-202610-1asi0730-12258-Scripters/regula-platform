@@ -1,4 +1,4 @@
-namespace CatchUpPlatform.API.Shared.Domain.Model;
+namespace Scripters.Regula.Plataform.Shared.Domain.Model;
 
 public interface IAuditableEntity
 {
