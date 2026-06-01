@@ -1,6 +1,6 @@
 using Humanizer;
 
-namespace Scripters.Regula.Plataform.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
+namespace Scripters.Regula.Platform.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
 
 /// <summary>
 ///     String extensions for the EF Core infrastructure layer.

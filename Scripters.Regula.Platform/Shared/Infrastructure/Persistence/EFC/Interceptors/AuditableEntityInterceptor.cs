@@ -1,8 +1,8 @@
-using Scripters.Regula.Plataform.Shared.Domain.Model;
+using Scripters.Regula.Platform.Shared.Domain.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 
-namespace Scripters.Regula.Plataform.Shared.Infrastructure.Persistence.EFC.Interceptors;
+namespace Scripters.Regula.Platform.Shared.Infrastructure.Persistence.EFC.Interceptors;
 
 public sealed class AuditableEntityInterceptor : SaveChangesInterceptor
 {

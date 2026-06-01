@@ -1,4 +1,4 @@
-namespace Scripters.Regula.Plataform.Shared.Domain.Repositories;
+namespace Scripters.Regula.Platform.Shared.Domain.Repositories;
 
 public interface IUnitOfWork 
 {

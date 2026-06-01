@@ -1,4 +1,4 @@
-﻿namespace Scripters.Regula.Plataform.Shared.Application.Patterns;
+﻿namespace Scripters.Regula.Platform.Shared.Application.Patterns;
 
 /// <summary>
 /// Represents the outcome of an operation that can succeed with a value or fail with an error.

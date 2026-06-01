@@ -1,8 +1,8 @@
-using Scripters.Regula.Plataform.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
-using Scripters.Regula.Plataform.Shared.Infrastructure.Persistence.EFC.Interceptors;
+using Scripters.Regula.Platform.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
+using Scripters.Regula.Platform.Shared.Infrastructure.Persistence.EFC.Interceptors;
 using Microsoft.EntityFrameworkCore;
 
-namespace Scripters.Regula.Plataform.Shared.Infrastructure.Persistence.EFC.Configuration;
+namespace Scripters.Regula.Platform.Shared.Infrastructure.Persistence.EFC.Configuration;
 
 public class AppDbContext(DbContextOptions options) : DbContext(options)
 {

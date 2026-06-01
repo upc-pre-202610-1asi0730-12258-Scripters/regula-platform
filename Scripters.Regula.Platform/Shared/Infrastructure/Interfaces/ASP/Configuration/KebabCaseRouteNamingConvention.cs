@@ -1,7 +1,7 @@
-using Scripters.Regula.Plataform.Shared.Infrastructure.Interfaces.ASP.Configuration.Extensions;
+using Scripters.Regula.Platform.Shared.Infrastructure.Interfaces.ASP.Configuration.Extensions;
 using Microsoft.AspNetCore.Mvc.ApplicationModels;
 
-namespace Scripters.Regula.Plataform.Shared.Infrastructure.Interfaces.ASP.Configuration;
+namespace Scripters.Regula.Platform.Shared.Infrastructure.Interfaces.ASP.Configuration;
 
 /// <summary>
 ///     An MVC controller-model convention that rewrites <c>[controller]</c> route tokens
