@@ -16,7 +16,7 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
     {
         base.OnModelCreating(builder);
 
-        // TODO: Register entities here
+        // TODO: Register entities here 
 
         builder.UseSnakeCaseNamingConvention();
     }
