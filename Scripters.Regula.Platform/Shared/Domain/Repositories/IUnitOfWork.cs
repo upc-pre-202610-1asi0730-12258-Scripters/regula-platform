@@ -1,7 +1,6 @@
 namespace Scripters.Regula.Platform.Shared.Domain.Repositories;
 
-public interface IUnitOfWork 
+public interface IUnitOfWork
 {
-    Task CompleteAsync();
-    
+    Task CompleteAsync(CancellationToken cancellationToken = default);
 }
