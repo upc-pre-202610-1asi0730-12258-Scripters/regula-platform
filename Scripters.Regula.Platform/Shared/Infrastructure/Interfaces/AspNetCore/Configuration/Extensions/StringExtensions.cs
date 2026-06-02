@@ -1,6 +1,6 @@
 using System.Text.RegularExpressions;
 
-namespace Scripters.Regula.Platform.Shared.Infrastructure.Interfaces.ASP.Configuration.Extensions;
+namespace Scripters.Regula.Platform.Shared.Infrastructure.Interfaces.AspNetCore.Configuration.Extensions;
 
 /// <summary>
 ///     String utility extensions used by the ASP.NET Core infrastructure layer.
