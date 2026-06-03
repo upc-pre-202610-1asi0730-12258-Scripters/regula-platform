@@ -2,8 +2,8 @@ using System.Net.Mime;
 using System.Text.Json;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using Scripters.Regula.Platform.Resources.Errors;
-using Scripters.Regula.Platform.Resources.Shared;
+using Scripters.Regula.Platform.Shared.Resources;
+using Scripters.Regula.Platform.Shared.Resources.Errors;
 
 namespace Scripters.Regula.Platform.Shared.Infrastructure.Pipeline.Middleware.Components;
 
