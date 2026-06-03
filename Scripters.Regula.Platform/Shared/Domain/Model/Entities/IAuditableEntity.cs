@@ -1,4 +1,4 @@
-namespace Scripters.Regula.Platform.Shared.Domain.Model;
+namespace Scripters.Regula.Platform.Shared.Domain.Model.Entities;
 
 public interface IAuditableEntity
 {

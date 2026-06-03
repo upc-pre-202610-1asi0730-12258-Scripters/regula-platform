@@ -1,6 +1,7 @@
 using Scripters.Regula.Platform.Shared.Domain.Model;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using Scripters.Regula.Platform.Shared.Domain.Model.Entities;
 
 namespace Scripters.Regula.Platform.Shared.Infrastructure.Persistence.EFC.Interceptors;
 
