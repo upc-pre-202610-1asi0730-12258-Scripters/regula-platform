@@ -5,8 +5,8 @@ namespace Scripters.Regula.Platform.Shared.Infrastructure.Persistence.EFC.Reposi
 
 public class UnitOfWork(AppDbContext context) : IUnitOfWork
 {
-    public async Task CompleteAsync()
+    public async Task CompleteAsync(CancellationToken cancellationToken = default)
     {
-        await context.SaveChangesAsync();
+        await context.SaveChangesAsync(cancellationToken);
     }
 }
