@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+    <data name="Ok" xml:space="preserve">
+    <value>Ok</value>
+  </data>
+    <data name="Cancel" xml:space="preserve">
+    <value>Cancel</value>
+  </data>
+    <data name="InternalServerError" xml:space="preserve">
+    <value>Internal Server Error</value>
+  </data>
+</root>
