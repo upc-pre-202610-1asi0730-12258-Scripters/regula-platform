@@ -11,4 +11,5 @@ namespace Scripters.Regula.Platform.Shared.Domain.Model.Events;
 /// </remarks>
 public interface IEvent : INotification
 {
+    
 }
