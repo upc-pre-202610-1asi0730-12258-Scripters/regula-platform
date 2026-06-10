@@ -19,11 +19,8 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Publishing\Application\" />
-      <Folder Include="Publishing\Domain\Model\Commands\" />
-      <Folder Include="Publishing\Domain\Model\Entities\" />
-      <Folder Include="Publishing\Domain\Model\Errors\" />
-      <Folder Include="Publishing\Domain\Model\Events\" />
+      <Folder Include="Report\Application\" />
+      <Folder Include="Report\Domain\Model\Events\" />
       <Folder Include="Shared\Infrastructure\Mediator\Cortex\Configuration\" />
       <Folder Include="Shared\Infrastructure\Pipeline\Middleware\Components\" />
       <Folder Include="Shared\Infrastructure\Pipeline\Middleware\Extensions\" />

@@ -1,4 +1,4 @@
-namespace Scripters.Regula.Platform.Publishing.Domain.Model.Queries;
+namespace Scripters.Regula.Platform.Report.Domain.Model.Queries;
 
 public record GetDashboardKpisQuery(int CompanyId);
 

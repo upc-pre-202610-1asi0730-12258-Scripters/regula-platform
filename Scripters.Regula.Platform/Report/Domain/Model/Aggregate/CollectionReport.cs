@@ -1,4 +1,4 @@
-namespace Scripters.Regula.Platform.Publishing.Domain.Model.Aggregate;
+namespace Scripters.Regula.Platform.Report.Domain.Model.Aggregate;
 
 public class CollectionReport
 {

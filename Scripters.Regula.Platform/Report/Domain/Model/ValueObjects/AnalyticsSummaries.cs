@@ -1,4 +1,4 @@
-namespace Scripters.Regula.Platform.Publishing.Domain.Model.ValueObjects;
+namespace Scripters.Regula.Platform.Report.Domain.Model.ValueObjects;
 
 public record InventorySummary(
     int TotalEntries,
@@ -9,7 +9,8 @@ public record InventorySummary(
 public record CylinderTypeBreakdown(
     string CylinderType,
     int Entries,
-    int Exits);
+    int Exits
+    );
 
 public record DeliverySummary(
     int TotalOrders,
@@ -18,21 +19,25 @@ public record DeliverySummary(
     int Cancelled,
     double FulfillmentRate,
     double AverageDeliveryTimeMinutes,
-    int TotalCylindersDelivered);
+    int TotalCylindersDelivered
+    );
 
 public record CollectionsSummary(
     decimal TotalCollected,
     decimal TotalPendingDebt,
-    IEnumerable<TopDebtor> TopDebtors);
+    IEnumerable<TopDebtor> TopDebtors
+    );
 
 public record TopDebtor(
     int ClientId,
     string ClientName,
-    decimal PendingAmount);
+    decimal PendingAmount
+    );
 
 public record DashboardKpis(
     int ActiveAlerts,
     int TotalStock,
     int ActiveSensors,
     int PendingDeliveries,
-    DateTime GeneratedAt);
+    DateTime GeneratedAt
+    );
