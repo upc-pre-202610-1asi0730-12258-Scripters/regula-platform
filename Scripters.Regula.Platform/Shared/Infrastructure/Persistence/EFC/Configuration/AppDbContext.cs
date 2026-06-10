@@ -1,6 +1,7 @@
+using Microsoft.EntityFrameworkCore;
+using Scripters.Regula.Platform.CommercialManagement.Infrastructure.Persistence.EFC.Configuration.Extensions;
 using Scripters.Regula.Platform.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
 using Scripters.Regula.Platform.Shared.Infrastructure.Persistence.EFC.Interceptors;
-using Microsoft.EntityFrameworkCore;
 
 namespace Scripters.Regula.Platform.Shared.Infrastructure.Persistence.EFC.Configuration;
 
@@ -16,7 +17,7 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
     {
         base.OnModelCreating(builder);
 
-        // TODO: Register entities here 
+        builder.ApplyCommercialManagementConfiguration();
 
         builder.UseSnakeCaseNamingConvention();
     }
