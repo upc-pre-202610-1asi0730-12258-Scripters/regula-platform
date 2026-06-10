@@ -1,6 +1,6 @@
 ﻿using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
-using Scripters.Regula.Platform.Iam.Application.CommandServices;
+using Scripters.Regula.Platform.Iam.Application.Internal.CommandServices;
 using Scripters.Regula.Platform.Iam.Interfaces.Rest.Resources;
 using Scripters.Regula.Platform.Iam.Interfaces.Rest.Transform;
 

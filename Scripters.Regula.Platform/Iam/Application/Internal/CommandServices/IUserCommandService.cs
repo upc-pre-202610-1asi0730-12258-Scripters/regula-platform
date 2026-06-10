@@ -1,7 +1,7 @@
 ﻿using Scripters.Regula.Platform.Iam.Application.Commands;
 using Scripters.Regula.Platform.Iam.Domain.Model.Aggregates;
 
-namespace Scripters.Regula.Platform.Iam.Application.CommandServices;
+namespace Scripters.Regula.Platform.Iam.Application.Internal.CommandServices;
 
 public interface IUserCommandService
 {

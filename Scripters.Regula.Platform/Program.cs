@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Scripters.Regula.Platform.Iam.Application.CommandServices;
+using Scripters.Regula.Platform.Iam.Application.Internal.CommandServices;
 using Scripters.Regula.Platform.Iam.Application.Internal.OutboundServices;
 using Scripters.Regula.Platform.Iam.Domain.Repositories;
 using Scripters.Regula.Platform.Iam.Infrastructure.Hashing.BCrypt;

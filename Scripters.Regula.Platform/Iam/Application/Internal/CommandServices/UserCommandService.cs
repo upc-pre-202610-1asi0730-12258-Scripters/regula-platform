@@ -3,7 +3,7 @@ using Scripters.Regula.Platform.Iam.Application.Internal.OutboundServices;
 using Scripters.Regula.Platform.Iam.Domain.Model.Aggregates;
 using Scripters.Regula.Platform.Iam.Domain.Repositories;
 
-namespace Scripters.Regula.Platform.Iam.Application.CommandServices;
+namespace Scripters.Regula.Platform.Iam.Application.Internal.CommandServices;
 
 public class UserCommandService(
     IUserRepository userRepository,
