@@ -1,6 +1,8 @@
 namespace Scripters.Regula.Platform.CommercialManagement.Domain.Model.ValueObjects;
 
-public class ECommercialDebtStatus
+public enum ECommercialDebtStatus
 {
-    
+    Pending,
+    Paid,
+    Cancelled
 }

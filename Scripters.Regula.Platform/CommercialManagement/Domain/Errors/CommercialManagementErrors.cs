@@ -1,6 +1,8 @@
 namespace Scripters.Regula.Platform.CommercialManagement.Domain.Errors;
 
-public class CommercialManagementErrors
+public enum CommercialManagementErrors
 {
-    
+    CustomerNotFound,
+    InvalidDebtAmount,
+    InvalidDebtDescription
 }
