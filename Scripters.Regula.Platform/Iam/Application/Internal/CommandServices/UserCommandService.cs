@@ -1,0 +1,29 @@
+﻿using Scripters.Regula.Platform.Iam.Application.Commands;
+using Scripters.Regula.Platform.Iam.Application.Internal.OutboundServices;
+using Scripters.Regula.Platform.Iam.Domain.Model.Aggregates;
+using Scripters.Regula.Platform.Iam.Domain.Repositories;
+using Scripters.Regula.Platform.Shared.Domain.Repositories;
+
+namespace Scripters.Regula.Platform.Iam.Application.Internal.CommandServices;
+
+public class UserCommandService(
+    IUserRepository userRepository,
+    IHashingService hashingService,
+    IUnitOfWork unitOfWork)
+    : IUserCommandService
+{
+    public async Task Handle(SignUpCommand command)
+    {
+        var existingUser = await userRepository.FindByUsernameAsync(command.Username);
+        if (existingUser != null)
+        {
+            throw new Exception("Username already exists.");
+        }
+
+        var hashedPassword = hashingService.HashPassword(command.Password);
+        var newUser = new User(command.Username, hashedPassword);
+        
+        await userRepository.AddAsync(newUser);
+        await unitOfWork.CompleteAsync();
+    }
+}
