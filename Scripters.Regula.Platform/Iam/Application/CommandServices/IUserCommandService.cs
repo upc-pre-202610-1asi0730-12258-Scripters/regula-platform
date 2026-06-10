@@ -1,0 +1,9 @@
+﻿using Scripters.Regula.Platform.Iam.Application.Commands;
+using Scripters.Regula.Platform.Iam.Domain.Model.Aggregates;
+
+namespace Scripters.Regula.Platform.Iam.Application.CommandServices;
+
+public interface IUserCommandService
+{
+    Task<(User user, string token)> Handle(SignInCommand command);
+}

@@ -8,20 +8,38 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Cortex.Mediator" Version="3.1.2" />
-        <PackageReference Include="Humanizer" Version="3.0.10" />
-        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="10.0.5"/>
+        <!-- EntityFrameworkCore Database Persistence related packages -->
         <PackageReference Include="Microsoft.EntityFrameworkCore" Version="10.0.8" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Abstractions" Version="10.0.8" />
-        <PackageReference Include="Microsoft.EntityFrameworkCore.Analyzers" Version="10.0.8" />
         <PackageReference Include="Microsoft.EntityFrameworkCore.Relational" Version="10.0.8" />
-        <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="10.0.8" />
+        <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="10.0.8" />
+
+        <!-- MySQL Database Persistence related packages -->
+        <PackageReference Include="MySql.EntityFrameworkCore" Version="10.0.7" />
+
+        <!-- Naming convention conversion related packages -->
+        <PackageReference Include="Humanizer" Version="3.0.10" />
+
+        <!-- OpenAPI documentation related packages -->
+        <PackageReference Include="Microsoft.AspNetCore.OpenApi" Version="9.0.0-preview.3.24172.13" />
+        <PackageReference Include="Swashbuckle.AspNetCore" Version="10.2.0" />
+        <PackageReference Include="Swashbuckle.AspNetCore.Annotations" Version="10.2.0" />
+
+        <!-- BCrypt Encription related packages -->
+        <PackageReference Include="BCrypt.Net-Next" Version="4.2.0" />
+
+        <!-- JSON Web Token related packages -->
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.18.0" />
+        <PackageReference Include="Microsoft.AspNetCore.Authentication.JwtBearer" Version="10.0.8" />
+        <PackageReference Include="Microsoft.IdentityModel.Tokens" Version="8.18.0" />
+
+        <!-- Mediator pattern related packages -->
+        <PackageReference Include="Cortex.Mediator" Version="3.1.2" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Shared\Infrastructure\Mediator\Cortex\Configuration\" />
-      <Folder Include="Shared\Infrastructure\Pipeline\Middleware\Components\" />
-      <Folder Include="Shared\Infrastructure\Pipeline\Middleware\Extensions\" />
+        <Folder Include="Shared\Infrastructure\Mediator\Cortex\Configuration\" />
+        <Folder Include="Shared\Infrastructure\Pipeline\Middleware\Components\" />
+        <Folder Include="Shared\Infrastructure\Pipeline\Middleware\Extensions\" />
     </ItemGroup>
 
 </Project>
