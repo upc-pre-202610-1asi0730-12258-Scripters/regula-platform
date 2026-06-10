@@ -18,4 +18,13 @@ public class AuthenticationController(IUserCommandService userCommandService) : 
         await userCommandService.Handle(command);
         return Ok(new { message = "User created successfully" });
     }
+    
+    [HttpPost("sign-in")]
+        public async Task<IActionResult> SignIn([FromBody] SignInResource resource)
+        {
+        var command = SignInCommandFromResourceAssembler.ToCommandFromResource(resource);
+        var (user, token) = await userCommandService.Handle(command);
+        var authenticatedUserResource = AuthenticatedUserResourceFromEntityAssembler.ToResourceFromEntity(user, token);
+        return Ok(authenticatedUserResource);
+    }
 }

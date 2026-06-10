@@ -9,6 +9,7 @@ namespace Scripters.Regula.Platform.Iam.Application.Internal.CommandServices;
 public class UserCommandService(
     IUserRepository userRepository,
     IHashingService hashingService,
+    ITokenService tokenService, 
     IUnitOfWork unitOfWork)
     : IUserCommandService
 {
@@ -26,4 +27,17 @@ public class UserCommandService(
         await userRepository.AddAsync(newUser);
         await unitOfWork.CompleteAsync();
     }
+    
+ 
+    public async Task<(User user, string token)> Handle(SignInCommand command)
+    {
+        var user = await userRepository.FindByUsernameAsync(command.Username);
+        if (user == null || !hashingService.VerifyPassword(command.Password, user.PasswordHash))
+        {
+            throw new Exception("Invalid username or password.");
+        }
+
+        var token = tokenService.GenerateToken(user);
+        return (user, token);
+    } 
 }

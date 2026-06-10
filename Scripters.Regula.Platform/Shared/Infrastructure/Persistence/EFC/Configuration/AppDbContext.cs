@@ -2,6 +2,8 @@ using Scripters.Regula.Platform.Shared.Infrastructure.Persistence.EFC.Configurat
 using Scripters.Regula.Platform.Shared.Infrastructure.Persistence.EFC.Interceptors;
 using Microsoft.EntityFrameworkCore;
 using Scripters.Regula.Platform.Iam.Domain.Model.Aggregates;
+using System.Reflection;
+
 namespace Scripters.Regula.Platform.Shared.Infrastructure.Persistence.EFC.Configuration;
 
 public class AppDbContext(DbContextOptions options) : DbContext(options)
@@ -16,9 +18,7 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
     protected override void OnModelCreating(ModelBuilder builder)
     {
         base.OnModelCreating(builder);
-
-        // TODO: Register entities here 
-
+        builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         builder.UseSnakeCaseNamingConvention();
     }
 }

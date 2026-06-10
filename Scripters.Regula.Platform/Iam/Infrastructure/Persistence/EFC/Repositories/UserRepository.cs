@@ -12,7 +12,6 @@ public class UserRepository(AppDbContext context) : BaseRepository<User>(context
     {
         return await context.Set<User>().FirstOrDefaultAsync(user => user.Username == username);
     }
-
     public new async Task AddAsync(User user)
     {
         await context.Set<User>().AddAsync(user);
