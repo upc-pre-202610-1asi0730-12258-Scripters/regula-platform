@@ -2,9 +2,6 @@ using Humanizer;
 
 namespace Scripters.Regula.Platform.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
 
-/// <summary>
-///     String extensions for the EF Core infrastructure layer.
-/// </summary>
 public static class StringExtensions
 {
     public static string ToSnakeCase(this string text)
