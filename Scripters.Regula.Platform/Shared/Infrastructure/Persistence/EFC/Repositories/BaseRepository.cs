@@ -10,6 +10,11 @@ public abstract class BaseRepository<TEntity>(DbContext context) : IBaseReposito
         await context.Set<TEntity>().AddAsync(entity, cancellationToken);
     }
 
+    public void Update(TEntity entity)
+    {
+        context.Set<TEntity>().Update(entity);
+    }
+
     public void Remove(TEntity entity)
     {
         context.Set<TEntity>().Remove(entity);
@@ -17,7 +22,12 @@ public abstract class BaseRepository<TEntity>(DbContext context) : IBaseReposito
 
     public async Task<TEntity?> FindAsync(int id, CancellationToken cancellationToken = default)
     {
-        return await context.Set<TEntity>().FindAsync([id], cancellationToken: cancellationToken);
+        return await context.Set<TEntity>().FindAsync(new object?[] { id }, cancellationToken);
+    }
+
+    public async Task<TEntity?> FindByIdAsync(int id, CancellationToken cancellationToken = default)
+    {
+        return await FindAsync(id, cancellationToken);
     }
 
     public async Task<IEnumerable<TEntity>> ListAsync(CancellationToken cancellationToken = default)
