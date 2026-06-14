@@ -1,16 +1,16 @@
+using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Scripters.Regula.Platform.CommercialManagement.Infrastructure.Persistence.EFC.Configuration.Extensions;
+using Scripters.Regula.Platform.Iam.Domain.Model.Aggregates;
 using Scripters.Regula.Platform.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
 using Scripters.Regula.Platform.Shared.Infrastructure.Persistence.EFC.Interceptors;
-using Microsoft.EntityFrameworkCore;
-using Scripters.Regula.Platform.Iam.Domain.Model.Aggregates;
-using System.Reflection;
 
 namespace Scripters.Regula.Platform.Shared.Infrastructure.Persistence.EFC.Configuration;
 
 public class AppDbContext(DbContextOptions options) : DbContext(options)
 {
     public DbSet<User> Users { get; set; }
+
     protected override void OnConfiguring(DbContextOptionsBuilder builder)
     {
         builder.AddInterceptors(new AuditableEntityInterceptor());
@@ -24,6 +24,7 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         builder.ApplyCommercialManagementConfiguration();
 
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
+
         builder.UseSnakeCaseNamingConvention();
     }
 }
