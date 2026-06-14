@@ -1,6 +1,9 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Scripters.Regula.Platform.CommercialManagement.Infrastructure.Persistence.EFC.Configuration.Extensions;
+using Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Aggregates;
+using Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Entities;
+using Scripters.Regula.Platform.DeliveryTracking.Infrastructure.Persistence.EFC.Configuration.Extensions;
 using Scripters.Regula.Platform.Iam.Domain.Model.Aggregates;
 using Scripters.Regula.Platform.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
 using Scripters.Regula.Platform.Shared.Infrastructure.Persistence.EFC.Interceptors;
@@ -10,6 +13,8 @@ namespace Scripters.Regula.Platform.Shared.Infrastructure.Persistence.EFC.Config
 public class AppDbContext(DbContextOptions options) : DbContext(options)
 {
     public DbSet<User> Users { get; set; }
+    public DbSet<Delivery> Deliveries { get; set; }
+    public DbSet<DriverLocation> DriverLocations { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder builder)
     {
@@ -22,6 +27,7 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
         base.OnModelCreating(builder);
 
         builder.ApplyCommercialManagementConfiguration();
+        builder.ApplyDeliveryTrackingConfiguration();
 
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 
