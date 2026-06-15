@@ -7,4 +7,6 @@ namespace Scripters.Regula.Platform.CommercialManagement.Application.CommandServ
 public interface ICustomerDebtCommandService
 {
     Task<Result<CommercialDebt>> Handle(CreateCustomerDebtCommand command, CancellationToken cancellationToken = default);
+
+    Task<Result<CommercialDebtPayment>> Handle(CreateCustomerDebtPaymentCommand command, CancellationToken cancellationToken = default);
 }
