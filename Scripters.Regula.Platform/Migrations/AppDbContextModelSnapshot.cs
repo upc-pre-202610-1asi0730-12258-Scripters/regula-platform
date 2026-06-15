@@ -169,6 +169,86 @@ namespace Scripters.Regula.Platform.Migrations
                     b.ToTable("commercial_debt_payments", (string)null);
                 });
 
+            modelBuilder.Entity("Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Aggregates.Delivery", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<DateTimeOffset?>("CreatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at");
+
+                    b.Property<int>("DriverId")
+                        .HasColumnType("int")
+                        .HasColumnName("driver_id");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_deliveries");
+
+                    b.ToTable("deliveries", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DriverId = 101
+                        });
+                });
+
+            modelBuilder.Entity("Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Entities.DriverLocation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<DateTimeOffset?>("CreatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at");
+
+                    b.Property<int>("DeliveryId")
+                        .HasColumnType("int")
+                        .HasColumnName("delivery_id");
+
+                    b.Property<int>("DriverId")
+                        .HasColumnType("int")
+                        .HasColumnName("driver_id");
+
+                    b.Property<DateTime?>("Eta")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("eta");
+
+                    b.Property<DateTime>("LastUpdated")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("last_updated");
+
+                    b.Property<double>("Latitude")
+                        .HasColumnType("double")
+                        .HasColumnName("latitude");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("double")
+                        .HasColumnName("longitude");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_driver_locations");
+
+                    b.HasIndex("DeliveryId")
+                        .HasDatabaseName("i_x_driver_locations_delivery_id");
+
+                    b.ToTable("driver_locations", (string)null);
+                });
+
             modelBuilder.Entity("Scripters.Regula.Platform.Iam.Domain.Model.Aggregates.User", b =>
                 {
                     b.Property<int>("Id")
@@ -214,6 +294,18 @@ namespace Scripters.Regula.Platform.Migrations
                         .HasConstraintName("f_k_commercial_debt_payments_commercial_debts_customer_debt_id");
 
                     b.Navigation("CustomerDebt");
+                });
+
+            modelBuilder.Entity("Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Entities.DriverLocation", b =>
+                {
+                    b.HasOne("Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Aggregates.Delivery", "Delivery")
+                        .WithMany()
+                        .HasForeignKey("DeliveryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("f_k_driver_locations_deliveries_delivery_id");
+
+                    b.Navigation("Delivery");
                 });
 #pragma warning restore 612, 618
         }
