@@ -32,4 +32,15 @@ public class CommercialCustomer : IAuditableEntity
         ActiveDebtAmount += amount;
         DebtCount++;
     }
+
+    public void DecreaseActiveDebt(decimal amount, bool debtWasPaid)
+    {
+        ActiveDebtAmount -= amount;
+
+        if (ActiveDebtAmount < 0)
+            ActiveDebtAmount = 0;
+
+        if (debtWasPaid && DebtCount > 0)
+            DebtCount--;
+    }
 }

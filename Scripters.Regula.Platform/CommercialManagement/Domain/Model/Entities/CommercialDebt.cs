@@ -39,4 +39,30 @@ public class CommercialDebt : IAuditableEntity
         DueDate = dueDate;
         Status = ECommercialDebtStatus.Pending;
     }
+
+    public bool IsPending()
+    {
+        return Status == ECommercialDebtStatus.Pending;
+    }
+
+    public CommercialDebtPayment RegisterPayment(decimal amount, string? note)
+    {
+        var previousRemainingAmount = RemainingAmount;
+
+        RemainingAmount -= amount;
+
+        if (RemainingAmount <= 0)
+        {
+            RemainingAmount = 0;
+            Status = ECommercialDebtStatus.Paid;
+        }
+
+        return new CommercialDebtPayment(
+            Id,
+            CustomerId,
+            amount,
+            previousRemainingAmount,
+            RemainingAmount,
+            note);
+    }
 }
