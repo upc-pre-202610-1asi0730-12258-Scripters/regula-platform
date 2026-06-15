@@ -13,7 +13,9 @@ namespace Scripters.Regula.Platform.DeliveryTracking.Interfaces.Rest;
 [Produces("application/json")]
 public class DeliveryLocationController(IDeliveryLocationQueryService deliveryLocationQueryService) : ControllerBase
 {
+    
     [HttpGet("{id}/location")]
+    [ProducesResponseType(500)]
     [SwaggerOperation(
         Summary = "Get delivery GPS location",
         Description = "Returns the current GPS coordinates of the assigned driver for a delivery. " +

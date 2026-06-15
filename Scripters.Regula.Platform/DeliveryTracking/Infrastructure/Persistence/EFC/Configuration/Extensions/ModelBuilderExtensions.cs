@@ -15,7 +15,7 @@ public static class ModelBuilderExtensions
 
         builder.Entity<Delivery>().HasData(
             new { Id = 1, DriverId = 101 });
-
+ 
         builder.Entity<DriverLocation>().ToTable("driver_locations");
         builder.Entity<DriverLocation>().HasKey(l => l.Id);
         builder.Entity<DriverLocation>().Property(l => l.Id).IsRequired().ValueGeneratedOnAdd();
