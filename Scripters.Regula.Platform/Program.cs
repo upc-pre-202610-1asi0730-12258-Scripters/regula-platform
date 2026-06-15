@@ -6,6 +6,10 @@ using Scripters.Regula.Platform.CommercialManagement.Application.CommandServices
 using Scripters.Regula.Platform.CommercialManagement.Application.Internal.CommandServices;
 using Scripters.Regula.Platform.CommercialManagement.Domain.Repositories;
 using Scripters.Regula.Platform.CommercialManagement.Infrastructure.Persistence.EFC.Repositories;
+using Scripters.Regula.Platform.DeliveryTracking.Application.Internal.QueryServices;
+using Scripters.Regula.Platform.DeliveryTracking.Application.QueryServices;
+using Scripters.Regula.Platform.DeliveryTracking.Domain.Repositories;
+using Scripters.Regula.Platform.DeliveryTracking.Infrastructure.Persistence.EFC.Repositories;
 using Scripters.Regula.Platform.Iam.Application.Internal.CommandServices;
 using Scripters.Regula.Platform.Iam.Application.Internal.OutboundServices;
 using Scripters.Regula.Platform.Iam.Domain.Repositories;
@@ -30,10 +34,16 @@ builder.Services.AddDbContext<AppDbContext>(options =>
         options.UseMySQL(connectionString);
 });
 
+// Delivery Tracking Bounded Context
+builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();
+builder.Services.AddScoped<IDriverLocationRepository, DriverLocationRepository>();
+builder.Services.AddScoped<IDeliveryLocationQueryService, DeliveryLocationQueryService>();
+
 // Commercial Management Bounded Context
 builder.Services.AddScoped<ICommercialCustomerRepository, CommercialCustomerRepository>();
 builder.Services.AddScoped<ICommercialDebtRepository, CommercialDebtRepository>();
 builder.Services.AddScoped<ICustomerDebtCommandService, CustomerDebtCommandService>();
+builder.Services.AddScoped<ICommercialDebtPaymentRepository, CommercialDebtPaymentRepository>();
 
 // IAM Bounded Context
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -90,6 +100,12 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
     db.Database.EnsureCreated();
+}
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    context.Database.Migrate();
 }
 
 app.Run();
