@@ -43,4 +43,43 @@ public class CustomerDebtsController(ICustomerDebtCommandService customerDebtCom
 
         return StatusCode(StatusCodes.Status201Created, customerDebtResource);
     }
+
+    [HttpPost("{customerDebtId:int}/payments")]
+    [SwaggerOperation(
+        Summary = "Create customer debt payment",
+        Description = "Creates a payment for an existing customer debt and updates the remaining balance.",
+        OperationId = "CreateCustomerDebtPayment")]
+    [SwaggerResponse(StatusCodes.Status201Created, "Customer debt payment created", typeof(CustomerDebtPaymentResource))]
+    [SwaggerResponse(StatusCodes.Status400BadRequest, "Invalid request")]
+    [SwaggerResponse(StatusCodes.Status404NotFound, "Customer debt or customer not found")]
+    public async Task<IActionResult> CreateCustomerDebtPayment(
+        int customerDebtId,
+        [FromBody] CreateCustomerDebtPaymentResource resource,
+        CancellationToken cancellationToken)
+    {
+        var command = CreateCustomerDebtPaymentCommandFromResourceAssembler.ToCommandFromResource(
+            customerDebtId,
+            resource);
+
+        var result = await customerDebtCommandService.Handle(command, cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return result.Error switch
+            {
+                CommercialManagementErrors.DebtNotFound => NotFound(new { error = result.Message }),
+                CommercialManagementErrors.CustomerNotFound => NotFound(new { error = result.Message }),
+                CommercialManagementErrors.InvalidPaymentAmount => BadRequest(new { error = result.Message }),
+                CommercialManagementErrors.InvalidFullPaymentAmount => BadRequest(new { error = result.Message }),
+                CommercialManagementErrors.PaymentExceedsRemainingAmount => BadRequest(new { error = result.Message }),
+                CommercialManagementErrors.DebtAlreadyPaid => BadRequest(new { error = result.Message }),
+                _ => BadRequest(new { error = result.Message })
+            };
+        }
+
+        var customerDebtPaymentResource =
+            CustomerDebtPaymentResourceFromEntityAssembler.ToResourceFromEntity(result.Value!);
+
+        return StatusCode(StatusCodes.Status201Created, customerDebtPaymentResource);
+    }
 }
