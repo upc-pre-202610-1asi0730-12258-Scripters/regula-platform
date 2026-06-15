@@ -43,6 +43,18 @@ public static class ModelBuilderExtensions
             .HasOne(debt => debt.Customer)
             .WithMany()
             .HasForeignKey(debt => debt.CustomerId);
-        
+
+        builder.Entity<CommercialDebtPayment>().ToTable("commercial_debt_payments");
+        builder.Entity<CommercialDebtPayment>().HasKey(payment => payment.Id);
+        builder.Entity<CommercialDebtPayment>().Property(payment => payment.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<CommercialDebtPayment>().Property(payment => payment.Amount).IsRequired().HasPrecision(10, 2);
+        builder.Entity<CommercialDebtPayment>().Property(payment => payment.PreviousRemainingAmount).IsRequired().HasPrecision(10, 2);
+        builder.Entity<CommercialDebtPayment>().Property(payment => payment.NewRemainingAmount).IsRequired().HasPrecision(10, 2);
+        builder.Entity<CommercialDebtPayment>().Property(payment => payment.Note).HasMaxLength(250);
+
+        builder.Entity<CommercialDebtPayment>()
+            .HasOne(payment => payment.CustomerDebt)
+            .WithMany()
+            .HasForeignKey(payment => payment.CustomerDebtId);
     }
 }
