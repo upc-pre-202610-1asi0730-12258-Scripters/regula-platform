@@ -44,6 +44,8 @@ builder.Services.AddScoped<ICommercialCustomerRepository, CommercialCustomerRepo
 builder.Services.AddScoped<ICommercialDebtRepository, CommercialDebtRepository>();
 builder.Services.AddScoped<ICustomerDebtCommandService, CustomerDebtCommandService>();
 builder.Services.AddScoped<ICommercialDebtPaymentRepository, CommercialDebtPaymentRepository>();
+builder.Services.AddScoped<ICommercialDailySaleRepository, CommercialDailySaleRepository>();
+builder.Services.AddScoped<IDailySaleCommandService, DailySaleCommandService>();
 
 // IAM Bounded Context
 builder.Services.AddScoped<IUserRepository, UserRepository>();
