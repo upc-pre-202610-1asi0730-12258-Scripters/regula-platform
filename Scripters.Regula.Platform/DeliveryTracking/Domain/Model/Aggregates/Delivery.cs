@@ -24,6 +24,8 @@ public class Delivery : IAuditableEntity
 
     public DateTime ScheduledTime { get; private set; }
 
+    public string? DeliveredAt { get; private set; }
+
     public DateTimeOffset? CreatedAt { get; set; }
 
     public DateTimeOffset? UpdatedAt { get; set; }
@@ -40,5 +42,21 @@ public class Delivery : IAuditableEntity
         ItemCount = itemCount;
         ScheduledTime = scheduledTime;
         Status = EDeliveryStatus.Pending;
+    }
+
+    public bool CanTransitionTo(EDeliveryStatus newStatus)
+    {
+        return (Status, newStatus) switch
+        {
+            (EDeliveryStatus.OnRoute, EDeliveryStatus.Delivered) => true,
+            _ => false
+        };
+    }
+
+    public void UpdateStatus(EDeliveryStatus newStatus, string? deliveredAt)
+    {
+        Status = newStatus;
+        if (newStatus == EDeliveryStatus.Delivered)
+            DeliveredAt = deliveredAt;
     }
 }

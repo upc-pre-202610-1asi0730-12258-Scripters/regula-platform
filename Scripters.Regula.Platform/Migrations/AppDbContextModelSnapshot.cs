@@ -169,6 +169,205 @@ namespace Scripters.Regula.Platform.Migrations
                     b.ToTable("commercial_debt_payments", (string)null);
                 });
 
+            modelBuilder.Entity("Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Entities.DeliveryResponsible", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<DateTimeOffset?>("CreatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("name");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_delivery_responsibles");
+
+                    b.ToTable("delivery_responsibles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Responsable de prueba"
+                        });
+                });
+
+            modelBuilder.Entity("Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Entities.DeliveryVehicle", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Brand")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("brand");
+
+                    b.Property<DateTimeOffset?>("CreatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Plate")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("plate");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("type");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_delivery_vehicles");
+
+                    b.ToTable("delivery_vehicles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Brand = "Toyota",
+                            Plate = "ABC-123",
+                            Type = "Van"
+                        });
+                });
+
+            modelBuilder.Entity("Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Aggregates.Delivery", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<DateTimeOffset?>("CreatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("DeliveredAt")
+                        .HasMaxLength(5)
+                        .HasColumnType("varchar(5)")
+                        .HasColumnName("delivered_at");
+
+                    b.Property<int>("DriverId")
+                        .HasColumnType("int")
+                        .HasColumnName("driver_id");
+
+                    b.Property<int>("ItemCount")
+                        .HasColumnType("int")
+                        .HasColumnName("item_count");
+
+                    b.Property<int>("ResponsibleId")
+                        .HasColumnType("int")
+                        .HasColumnName("responsible_id");
+
+                    b.Property<DateTime>("ScheduledTime")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("scheduled_time");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("status");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at");
+
+                    b.Property<int>("VehicleId")
+                        .HasColumnType("int")
+                        .HasColumnName("vehicle_id");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_deliveries");
+
+                    b.HasIndex("ResponsibleId")
+                        .HasDatabaseName("i_x_deliveries_responsible_id");
+
+                    b.HasIndex("VehicleId")
+                        .HasDatabaseName("i_x_deliveries_vehicle_id");
+
+                    b.ToTable("deliveries", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            DriverId = 101,
+                            ItemCount = 5,
+                            ResponsibleId = 1,
+                            ScheduledTime = new DateTime(2026, 6, 16, 9, 0, 0),
+                            Status = "PENDING",
+                            VehicleId = 1
+                        });
+                });
+
+            modelBuilder.Entity("Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Entities.DriverLocation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<DateTimeOffset?>("CreatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at");
+
+                    b.Property<int>("DeliveryId")
+                        .HasColumnType("int")
+                        .HasColumnName("delivery_id");
+
+                    b.Property<int>("DriverId")
+                        .HasColumnType("int")
+                        .HasColumnName("driver_id");
+
+                    b.Property<DateTime?>("Eta")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("eta");
+
+                    b.Property<DateTime>("LastUpdated")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("last_updated");
+
+                    b.Property<double>("Latitude")
+                        .HasColumnType("double")
+                        .HasColumnName("latitude");
+
+                    b.Property<double>("Longitude")
+                        .HasColumnType("double")
+                        .HasColumnName("longitude");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_driver_locations");
+
+                    b.HasIndex("DeliveryId")
+                        .HasDatabaseName("i_x_driver_locations_delivery_id");
+
+                    b.ToTable("driver_locations", (string)null);
+                });
+
             modelBuilder.Entity("Scripters.Regula.Platform.Iam.Domain.Model.Aggregates.User", b =>
                 {
                     b.Property<int>("Id")
@@ -214,6 +413,38 @@ namespace Scripters.Regula.Platform.Migrations
                         .HasConstraintName("f_k_commercial_debt_payments_commercial_debts_customer_debt_id");
 
                     b.Navigation("CustomerDebt");
+                });
+
+            modelBuilder.Entity("Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Aggregates.Delivery", b =>
+                {
+                    b.HasOne("Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Entities.DeliveryResponsible", "Responsible")
+                        .WithMany()
+                        .HasForeignKey("ResponsibleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("f_k_deliveries_delivery_responsibles_responsible_id");
+
+                    b.HasOne("Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Entities.DeliveryVehicle", "Vehicle")
+                        .WithMany()
+                        .HasForeignKey("VehicleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("f_k_deliveries_delivery_vehicles_vehicle_id");
+
+                    b.Navigation("Responsible");
+                    b.Navigation("Vehicle");
+                });
+
+            modelBuilder.Entity("Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Entities.DriverLocation", b =>
+                {
+                    b.HasOne("Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Aggregates.Delivery", "Delivery")
+                        .WithMany()
+                        .HasForeignKey("DeliveryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("f_k_driver_locations_deliveries_delivery_id");
+
+                    b.Navigation("Delivery");
                 });
 #pragma warning restore 612, 618
         }

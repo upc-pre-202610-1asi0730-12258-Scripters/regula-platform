@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Scripters.Regula.Platform.DeliveryTracking.Application.CommandServices;
 using Scripters.Regula.Platform.DeliveryTracking.Application.QueryServices;
 using Scripters.Regula.Platform.DeliveryTracking.Domain.Errors;
 using Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Queries;
@@ -12,12 +13,14 @@ namespace Scripters.Regula.Platform.DeliveryTracking.Interfaces.Rest;
 [ApiController]
 [Route("api/v1/deliveries")]
 [Produces("application/json")]
-public class DeliveriesController(IDeliveryQueryService deliveryQueryService) : ControllerBase
+public class DeliveriesController(
+    IDeliveryQueryService deliveryQueryService,
+    IDeliveryCommandService deliveryCommandService) : ControllerBase
 {
     [HttpGet]
     [SwaggerOperation(
         Summary = "Get deliveries by date and status",
-        Description = "Returns the list of deliveries for a given date filtered by status (PENDING or COMPLETED).",
+        Description = "Returns the list of deliveries for a given date filtered by status (PENDING, ON_ROUTE or DELIVERED).",
         OperationId = "GetDeliveries")]
     [SwaggerResponse(StatusCodes.Status200OK, "Deliveries returned", typeof(IEnumerable<DeliveryResource>))]
     [SwaggerResponse(StatusCodes.Status400BadRequest, "Invalid status value")]
@@ -27,7 +30,7 @@ public class DeliveriesController(IDeliveryQueryService deliveryQueryService) : 
         CancellationToken cancellationToken)
     {
         if (!Enum.TryParse<EDeliveryStatus>(status, ignoreCase: true, out var deliveryStatus))
-            return BadRequest(new { error = $"Invalid status value '{status}'. Allowed values: PENDING, COMPLETED." });
+            return BadRequest(new { error = $"Invalid status value '{status}'. Allowed values: PENDING, ON_ROUTE, DELIVERED." });
 
         var resolvedDate = date ?? DateOnly.FromDateTime(DateTime.UtcNow);
 
@@ -63,5 +66,43 @@ public class DeliveriesController(IDeliveryQueryService deliveryQueryService) : 
 
         var resource = DeliveryDetailResourceFromEntityAssembler.ToResourceFromEntity(result.Value!);
         return Ok(resource);
+    }
+
+    [HttpPatch("{id:int}/status")]
+    [SwaggerOperation(
+        Summary = "Update delivery status",
+        Description = "Updates the status of a delivery. Only the ON_ROUTE → DELIVERED transition is allowed.",
+        OperationId = "UpdateDeliveryStatus")]
+    [SwaggerResponse(StatusCodes.Status200OK, "Delivery status updated", typeof(DeliveryDetailResource))]
+    [SwaggerResponse(StatusCodes.Status400BadRequest, "Invalid status value")]
+    [SwaggerResponse(StatusCodes.Status404NotFound, "Delivery not found")]
+    [SwaggerResponse(StatusCodes.Status422UnprocessableEntity, "Status transition not allowed")]
+    public async Task<IActionResult> UpdateDeliveryStatus(
+        [FromRoute] int id,
+        [FromBody] UpdateDeliveryStatusResource resource,
+        CancellationToken cancellationToken)
+    {
+        if (!Enum.TryParse<EDeliveryStatus>(resource.Status, ignoreCase: true, out var deliveryStatus))
+            return BadRequest(new { error = $"Invalid status value '{resource.Status}'. Allowed values: PENDING, ON_ROUTE, DELIVERED." });
+
+        var command = UpdateDeliveryStatusCommandFromResourceAssembler.ToCommandFromResource(id, resource, deliveryStatus);
+        var result = await deliveryCommandService.Handle(command, cancellationToken);
+
+        if (result.IsFailure)
+        {
+            return result.Error switch
+            {
+                DeliveryTrackingErrors.DeliveryNotFound => NotFound(new { error = result.Message }),
+                DeliveryTrackingErrors.InvalidStatusTransition => UnprocessableEntity(new { error = result.Message }),
+                _ => BadRequest(new { error = result.Message })
+            };
+        }
+
+        var detailResult = await deliveryQueryService.Handle(new GetDeliveryByIdQuery(id), cancellationToken);
+        if (detailResult.IsFailure)
+            return Ok(new { id = result.Value!.Id, status = result.Value!.Status.ToString().ToUpperInvariant() });
+
+        var detailResource = DeliveryDetailResourceFromEntityAssembler.ToResourceFromEntity(detailResult.Value!);
+        return Ok(detailResource);
     }
 }
