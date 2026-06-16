@@ -167,7 +167,7 @@ namespace Scripters.Regula.Platform.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("int")
                         .HasColumnName("customer_id");
-
+    
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(250)
