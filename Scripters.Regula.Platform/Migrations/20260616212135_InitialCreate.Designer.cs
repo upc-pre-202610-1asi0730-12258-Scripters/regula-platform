@@ -11,7 +11,7 @@ using Scripters.Regula.Platform.Shared.Infrastructure.Persistence.EFC.Configurat
 namespace Scripters.Regula.Platform.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260615220728_InitialCreate")]
+    [Migration("20260616212135_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -65,6 +65,87 @@ namespace Scripters.Regula.Platform.Migrations
                             DebtCount = 0,
                             Name = "Cliente de prueba"
                         });
+                });
+
+            modelBuilder.Entity("Scripters.Regula.Platform.CommercialManagement.Domain.Model.Entities.CommercialDailySale", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<DateTimeOffset?>("CreatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at");
+
+                    b.Property<int?>("CustomerId")
+                        .HasColumnType("int")
+                        .HasColumnName("customer_id");
+
+                    b.Property<string>("CustomerName")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("customer_name");
+
+                    b.Property<string>("CylinderType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("cylinder_type");
+
+                    b.Property<string>("CylinderTypeId")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("cylinder_type_id");
+
+                    b.Property<string>("DistributorName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("distributor_name");
+
+                    b.Property<string>("PaymentType")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("payment_type");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int")
+                        .HasColumnName("quantity");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("status");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("decimal(10,2)")
+                        .HasColumnName("total_amount");
+
+                    b.Property<string>("TransactionCode")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("transaction_code");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("decimal(10,2)")
+                        .HasColumnName("unit_price");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_commercial_daily_sales");
+
+                    b.HasIndex("CustomerId")
+                        .HasDatabaseName("i_x_commercial_daily_sales_customer_id");
+
+                    b.ToTable("commercial_daily_sales", (string)null);
                 });
 
             modelBuilder.Entity("Scripters.Regula.Platform.CommercialManagement.Domain.Model.Entities.CommercialDebt", b =>
@@ -273,6 +354,17 @@ namespace Scripters.Regula.Platform.Migrations
                         .HasName("p_k_users");
 
                     b.ToTable("users");
+                });
+
+            modelBuilder.Entity("Scripters.Regula.Platform.CommercialManagement.Domain.Model.Entities.CommercialDailySale", b =>
+                {
+                    b.HasOne("Scripters.Regula.Platform.CommercialManagement.Domain.Model.Aggregates.CommercialCustomer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("f_k_commercial_daily_sales_commercial_customers_customer_id");
+
+                    b.Navigation("Customer");
                 });
 
             modelBuilder.Entity("Scripters.Regula.Platform.CommercialManagement.Domain.Model.Entities.CommercialDebt", b =>

@@ -65,6 +65,38 @@ namespace Scripters.Regula.Platform.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
+                name: "commercial_daily_sales",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    transaction_code = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false),
+                    cylinder_type_id = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false),
+                    cylinder_type = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
+                    quantity = table.Column<int>(type: "int", nullable: false),
+                    unit_price = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
+                    total_amount = table.Column<decimal>(type: "decimal(10,2)", precision: 10, scale: 2, nullable: false),
+                    payment_type = table.Column<string>(type: "longtext", nullable: false),
+                    customer_id = table.Column<int>(type: "int", nullable: true),
+                    customer_name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: true),
+                    distributor_name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    status = table.Column<string>(type: "longtext", nullable: false),
+                    created_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true),
+                    updated_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("p_k_commercial_daily_sales", x => x.id);
+                    table.ForeignKey(
+                        name: "f_k_commercial_daily_sales_commercial_customers_customer_id",
+                        column: x => x.customer_id,
+                        principalTable: "commercial_customers",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Restrict);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
                 name: "commercial_debts",
                 columns: table => new
                 {
@@ -156,6 +188,11 @@ namespace Scripters.Regula.Platform.Migrations
                 values: new object[] { 1, null, 101, null });
 
             migrationBuilder.CreateIndex(
+                name: "i_x_commercial_daily_sales_customer_id",
+                table: "commercial_daily_sales",
+                column: "customer_id");
+
+            migrationBuilder.CreateIndex(
                 name: "i_x_commercial_debt_payments_customer_debt_id",
                 table: "commercial_debt_payments",
                 column: "customer_debt_id");
@@ -174,6 +211,9 @@ namespace Scripters.Regula.Platform.Migrations
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
+            migrationBuilder.DropTable(
+                name: "commercial_daily_sales");
+
             migrationBuilder.DropTable(
                 name: "commercial_debt_payments");
 
