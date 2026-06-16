@@ -6,6 +6,8 @@ using Scripters.Regula.Platform.CommercialManagement.Application.CommandServices
 using Scripters.Regula.Platform.CommercialManagement.Application.Internal.CommandServices;
 using Scripters.Regula.Platform.CommercialManagement.Domain.Repositories;
 using Scripters.Regula.Platform.CommercialManagement.Infrastructure.Persistence.EFC.Repositories;
+using Scripters.Regula.Platform.DeliveryTracking.Application.CommandServices;
+using Scripters.Regula.Platform.DeliveryTracking.Application.Internal.CommandServices;
 using Scripters.Regula.Platform.DeliveryTracking.Application.Internal.QueryServices;
 using Scripters.Regula.Platform.DeliveryTracking.Application.QueryServices;
 using Scripters.Regula.Platform.DeliveryTracking.Domain.Repositories;
@@ -39,6 +41,7 @@ builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();
 builder.Services.AddScoped<IDriverLocationRepository, DriverLocationRepository>();
 builder.Services.AddScoped<IDeliveryLocationQueryService, DeliveryLocationQueryService>();
 builder.Services.AddScoped<IDeliveryQueryService, DeliveryQueryService>();
+builder.Services.AddScoped<IDeliveryCommandService, DeliveryCommandService>();
 
 // Commercial Management Bounded Context
 builder.Services.AddScoped<ICommercialCustomerRepository, CommercialCustomerRepository>();

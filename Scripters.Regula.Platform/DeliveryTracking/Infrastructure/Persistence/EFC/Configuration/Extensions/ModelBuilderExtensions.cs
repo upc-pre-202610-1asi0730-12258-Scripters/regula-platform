@@ -35,6 +35,7 @@ public static class ModelBuilderExtensions
         builder.Entity<Delivery>().Property(d => d.VehicleId).IsRequired();
         builder.Entity<Delivery>().Property(d => d.ItemCount).IsRequired();
         builder.Entity<Delivery>().Property(d => d.ScheduledTime).IsRequired();
+        builder.Entity<Delivery>().Property(d => d.DeliveredAt).HasMaxLength(5);
 
         builder.Entity<Delivery>()
             .Property(d => d.Status)
