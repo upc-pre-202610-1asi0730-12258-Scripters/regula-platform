@@ -38,6 +38,7 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();
 builder.Services.AddScoped<IDriverLocationRepository, DriverLocationRepository>();
 builder.Services.AddScoped<IDeliveryLocationQueryService, DeliveryLocationQueryService>();
+builder.Services.AddScoped<IDeliveryQueryService, DeliveryQueryService>();
 
 // Commercial Management Bounded Context
 builder.Services.AddScoped<ICommercialCustomerRepository, CommercialCustomerRepository>();

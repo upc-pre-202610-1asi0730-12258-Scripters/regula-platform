@@ -1,3 +1,5 @@
+using Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Entities;
+using Scripters.Regula.Platform.DeliveryTracking.Domain.Model.ValueObjects;
 using Scripters.Regula.Platform.Shared.Domain.Model.Entities;
 
 namespace Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Aggregates;
@@ -8,6 +10,20 @@ public class Delivery : IAuditableEntity
 
     public int DriverId { get; private set; }
 
+    public int ResponsibleId { get; private set; }
+
+    public DeliveryResponsible Responsible { get; private set; } = null!;
+
+    public int VehicleId { get; private set; }
+
+    public DeliveryVehicle Vehicle { get; private set; } = null!;
+
+    public EDeliveryStatus Status { get; private set; }
+
+    public int ItemCount { get; private set; }
+
+    public DateTime ScheduledTime { get; private set; }
+
     public DateTimeOffset? CreatedAt { get; set; }
 
     public DateTimeOffset? UpdatedAt { get; set; }
@@ -16,8 +32,13 @@ public class Delivery : IAuditableEntity
     {
     }
 
-    public Delivery(int driverId)
+    public Delivery(int driverId, int responsibleId, int vehicleId, int itemCount, DateTime scheduledTime)
     {
         DriverId = driverId;
+        ResponsibleId = responsibleId;
+        VehicleId = vehicleId;
+        ItemCount = itemCount;
+        ScheduledTime = scheduledTime;
+        Status = EDeliveryStatus.Pending;
     }
 }

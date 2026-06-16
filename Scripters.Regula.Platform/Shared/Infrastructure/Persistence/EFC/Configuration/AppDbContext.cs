@@ -15,6 +15,8 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
     public DbSet<User> Users { get; set; }
     public DbSet<Delivery> Deliveries { get; set; }
     public DbSet<DriverLocation> DriverLocations { get; set; }
+    public DbSet<DeliveryResponsible> DeliveryResponsibles { get; set; }
+    public DbSet<DeliveryVehicle> DeliveryVehicles { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder builder)
     {
