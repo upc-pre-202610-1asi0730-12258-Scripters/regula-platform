@@ -48,6 +48,8 @@ builder.Services.AddScoped<ICommercialCustomerRepository, CommercialCustomerRepo
 builder.Services.AddScoped<ICommercialDebtRepository, CommercialDebtRepository>();
 builder.Services.AddScoped<ICustomerDebtCommandService, CustomerDebtCommandService>();
 builder.Services.AddScoped<ICommercialDebtPaymentRepository, CommercialDebtPaymentRepository>();
+builder.Services.AddScoped<ICommercialDailySaleRepository, CommercialDailySaleRepository>();
+builder.Services.AddScoped<IDailySaleCommandService, DailySaleCommandService>();
 
 // IAM Bounded Context
 builder.Services.AddScoped<IUserRepository, UserRepository>();
@@ -98,5 +100,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+
+using (var scope = app.Services.CreateScope())
+{
+    var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
+    context.Database.Migrate();
+}
 
 app.Run();

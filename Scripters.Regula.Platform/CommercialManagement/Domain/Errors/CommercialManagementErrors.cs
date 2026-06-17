@@ -9,6 +9,10 @@ public enum CommercialManagementErrors
     InvalidDebtDescription,
     InvalidPaymentAmount,
     InvalidFullPaymentAmount,
-    PaymentExceedsRemainingAmount
- 
+    PaymentExceedsRemainingAmount,
+    InvalidSaleQuantity,
+    InvalidCylinderType,
+    InvalidPaymentType,
+    InvalidUnitPrice,
+    CustomerRequiredForDebtSale
 }

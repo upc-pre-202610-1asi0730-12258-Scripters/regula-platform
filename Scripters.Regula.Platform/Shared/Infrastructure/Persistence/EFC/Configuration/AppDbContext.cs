@@ -1,6 +1,7 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
 using Scripters.Regula.Platform.CommercialManagement.Infrastructure.Persistence.EFC.Configuration.Extensions;
+using Scripters.Regula.Platform.CommercialManagement.Domain.Model.Entities;
 using Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Aggregates;
 using Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Entities;
 using Scripters.Regula.Platform.DeliveryTracking.Infrastructure.Persistence.EFC.Configuration.Extensions;
@@ -17,6 +18,7 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
     public DbSet<DriverLocation> DriverLocations { get; set; }
     public DbSet<DeliveryResponsible> DeliveryResponsibles { get; set; }
     public DbSet<DeliveryVehicle> DeliveryVehicles { get; set; }
+    public DbSet<CommercialDailySale> CommercialDailySales { get; set; }
 
     protected override void OnConfiguring(DbContextOptionsBuilder builder)
     {

@@ -11,7 +11,7 @@ using Scripters.Regula.Platform.Shared.Infrastructure.Persistence.EFC.Configurat
 namespace Scripters.Regula.Platform.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260615220728_InitialCreate")]
+    [Migration("20260616224827_InitialCreate")]
     partial class InitialCreate
     {
         /// <inheritdoc />
@@ -67,6 +67,87 @@ namespace Scripters.Regula.Platform.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Scripters.Regula.Platform.CommercialManagement.Domain.Model.Entities.CommercialDailySale", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<DateTimeOffset?>("CreatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at");
+
+                    b.Property<int?>("CustomerId")
+                        .HasColumnType("int")
+                        .HasColumnName("customer_id");
+
+                    b.Property<string>("CustomerName")
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("customer_name");
+
+                    b.Property<string>("CylinderType")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("cylinder_type");
+
+                    b.Property<string>("CylinderTypeId")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("cylinder_type_id");
+
+                    b.Property<string>("DistributorName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("distributor_name");
+
+                    b.Property<string>("PaymentType")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("payment_type");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int")
+                        .HasColumnName("quantity");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("status");
+
+                    b.Property<decimal>("TotalAmount")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("decimal(10,2)")
+                        .HasColumnName("total_amount");
+
+                    b.Property<string>("TransactionCode")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("transaction_code");
+
+                    b.Property<decimal>("UnitPrice")
+                        .HasPrecision(10, 2)
+                        .HasColumnType("decimal(10,2)")
+                        .HasColumnName("unit_price");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_commercial_daily_sales");
+
+                    b.HasIndex("CustomerId")
+                        .HasDatabaseName("i_x_commercial_daily_sales_customer_id");
+
+                    b.ToTable("commercial_daily_sales", (string)null);
+                });
+
             modelBuilder.Entity("Scripters.Regula.Platform.CommercialManagement.Domain.Model.Entities.CommercialDebt", b =>
                 {
                     b.Property<int>("Id")
@@ -86,7 +167,7 @@ namespace Scripters.Regula.Platform.Migrations
                     b.Property<int>("CustomerId")
                         .HasColumnType("int")
                         .HasColumnName("customer_id");
-    
+
                     b.Property<string>("Description")
                         .IsRequired()
                         .HasMaxLength(250)
@@ -183,16 +264,48 @@ namespace Scripters.Regula.Platform.Migrations
                         .HasColumnType("datetime")
                         .HasColumnName("created_at");
 
+                    b.Property<string>("DeliveredAt")
+                        .HasMaxLength(5)
+                        .HasColumnType("varchar(5)")
+                        .HasColumnName("delivered_at");
+
                     b.Property<int>("DriverId")
                         .HasColumnType("int")
                         .HasColumnName("driver_id");
+
+                    b.Property<int>("ItemCount")
+                        .HasColumnType("int")
+                        .HasColumnName("item_count");
+
+                    b.Property<int>("ResponsibleId")
+                        .HasColumnType("int")
+                        .HasColumnName("responsible_id");
+
+                    b.Property<DateTime>("ScheduledTime")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("scheduled_time");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("status");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("datetime")
                         .HasColumnName("updated_at");
 
+                    b.Property<int>("VehicleId")
+                        .HasColumnType("int")
+                        .HasColumnName("vehicle_id");
+
                     b.HasKey("Id")
                         .HasName("p_k_deliveries");
+
+                    b.HasIndex("ResponsibleId")
+                        .HasDatabaseName("i_x_deliveries_responsible_id");
+
+                    b.HasIndex("VehicleId")
+                        .HasDatabaseName("i_x_deliveries_vehicle_id");
 
                     b.ToTable("deliveries", (string)null);
 
@@ -200,7 +313,94 @@ namespace Scripters.Regula.Platform.Migrations
                         new
                         {
                             Id = 1,
-                            DriverId = 101
+                            DriverId = 101,
+                            ItemCount = 5,
+                            ResponsibleId = 1,
+                            ScheduledTime = new DateTime(2026, 6, 16, 9, 0, 0, 0, DateTimeKind.Unspecified),
+                            Status = "PENDING",
+                            VehicleId = 1
+                        });
+                });
+
+            modelBuilder.Entity("Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Entities.DeliveryResponsible", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<DateTimeOffset?>("CreatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("name");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_delivery_responsibles");
+
+                    b.ToTable("delivery_responsibles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Responsable de prueba"
+                        });
+                });
+
+            modelBuilder.Entity("Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Entities.DeliveryVehicle", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<string>("Brand")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("brand");
+
+                    b.Property<DateTimeOffset?>("CreatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Plate")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("plate");
+
+                    b.Property<string>("Type")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("type");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_delivery_vehicles");
+
+                    b.ToTable("delivery_vehicles", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Brand = "Toyota",
+                            Plate = "ABC-123",
+                            Type = "Van"
                         });
                 });
 
@@ -275,6 +475,17 @@ namespace Scripters.Regula.Platform.Migrations
                     b.ToTable("users");
                 });
 
+            modelBuilder.Entity("Scripters.Regula.Platform.CommercialManagement.Domain.Model.Entities.CommercialDailySale", b =>
+                {
+                    b.HasOne("Scripters.Regula.Platform.CommercialManagement.Domain.Model.Aggregates.CommercialCustomer", "Customer")
+                        .WithMany()
+                        .HasForeignKey("CustomerId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .HasConstraintName("f_k_commercial_daily_sales_commercial_customers_customer_id");
+
+                    b.Navigation("Customer");
+                });
+
             modelBuilder.Entity("Scripters.Regula.Platform.CommercialManagement.Domain.Model.Entities.CommercialDebt", b =>
                 {
                     b.HasOne("Scripters.Regula.Platform.CommercialManagement.Domain.Model.Aggregates.CommercialCustomer", "Customer")
@@ -297,6 +508,27 @@ namespace Scripters.Regula.Platform.Migrations
                         .HasConstraintName("f_k_commercial_debt_payments_commercial_debts_customer_debt_id");
 
                     b.Navigation("CustomerDebt");
+                });
+
+            modelBuilder.Entity("Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Aggregates.Delivery", b =>
+                {
+                    b.HasOne("Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Entities.DeliveryResponsible", "Responsible")
+                        .WithMany()
+                        .HasForeignKey("ResponsibleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("f_k_deliveries_delivery_responsibles_responsible_id");
+
+                    b.HasOne("Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Entities.DeliveryVehicle", "Vehicle")
+                        .WithMany()
+                        .HasForeignKey("VehicleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired()
+                        .HasConstraintName("f_k_deliveries_delivery_vehicles_vehicle_id");
+
+                    b.Navigation("Responsible");
+
+                    b.Navigation("Vehicle");
                 });
 
             modelBuilder.Entity("Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Entities.DriverLocation", b =>
