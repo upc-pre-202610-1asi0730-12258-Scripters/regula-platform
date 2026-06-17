@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <ImplicitUsings>enable</ImplicitUsings>
         <RootNamespace>Scripters.Regula.Platform</RootNamespace>
+        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
     </PropertyGroup>
 
     <ItemGroup>
@@ -34,6 +35,12 @@
         <Folder Include="Shared\Infrastructure\Mediator\Cortex\Configuration\" />
         <Folder Include="Shared\Infrastructure\Pipeline\Middleware\Components\" />
         <Folder Include="Shared\Infrastructure\Pipeline\Middleware\Extensions\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Include="..\.dockerignore">
+        <Link>.dockerignore</Link>
+      </Content>
     </ItemGroup>
 
 </Project>
