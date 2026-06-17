@@ -48,6 +48,7 @@ public class Delivery : IAuditableEntity
     {
         return (Status, newStatus) switch
         {
+            (EDeliveryStatus.Pending, EDeliveryStatus.OnRoute) => true,
             (EDeliveryStatus.OnRoute, EDeliveryStatus.Delivered) => true,
             _ => false
         };
