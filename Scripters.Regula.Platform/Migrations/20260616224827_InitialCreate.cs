@@ -34,18 +34,36 @@ namespace Scripters.Regula.Platform.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "deliveries",
+                name: "delivery_responsibles",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    driver_id = table.Column<int>(type: "int", nullable: false),
+                    name = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     created_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true),
                     updated_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("p_k_deliveries", x => x.id);
+                    table.PrimaryKey("p_k_delivery_responsibles", x => x.id);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
+            migrationBuilder.CreateTable(
+                name: "delivery_vehicles",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    plate = table.Column<string>(type: "varchar(20)", maxLength: 20, nullable: false),
+                    type = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
+                    brand = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
+                    created_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true),
+                    updated_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("p_k_delivery_vehicles", x => x.id);
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
@@ -124,27 +142,34 @@ namespace Scripters.Regula.Platform.Migrations
                 .Annotation("MySQL:Charset", "utf8mb4");
 
             migrationBuilder.CreateTable(
-                name: "driver_locations",
+                name: "deliveries",
                 columns: table => new
                 {
                     id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
-                    delivery_id = table.Column<int>(type: "int", nullable: false),
                     driver_id = table.Column<int>(type: "int", nullable: false),
-                    latitude = table.Column<double>(type: "double", nullable: false),
-                    longitude = table.Column<double>(type: "double", nullable: false),
-                    last_updated = table.Column<DateTime>(type: "datetime(6)", nullable: false),
-                    eta = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    responsible_id = table.Column<int>(type: "int", nullable: false),
+                    vehicle_id = table.Column<int>(type: "int", nullable: false),
+                    status = table.Column<string>(type: "longtext", nullable: false),
+                    item_count = table.Column<int>(type: "int", nullable: false),
+                    scheduled_time = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    delivered_at = table.Column<string>(type: "varchar(5)", maxLength: 5, nullable: true),
                     created_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true),
                     updated_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("p_k_driver_locations", x => x.id);
+                    table.PrimaryKey("p_k_deliveries", x => x.id);
                     table.ForeignKey(
-                        name: "f_k_driver_locations_deliveries_delivery_id",
-                        column: x => x.delivery_id,
-                        principalTable: "deliveries",
+                        name: "f_k_deliveries_delivery_responsibles_responsible_id",
+                        column: x => x.responsible_id,
+                        principalTable: "delivery_responsibles",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "f_k_deliveries_delivery_vehicles_vehicle_id",
+                        column: x => x.vehicle_id,
+                        principalTable: "delivery_vehicles",
                         principalColumn: "id",
                         onDelete: ReferentialAction.Cascade);
                 })
@@ -177,15 +202,52 @@ namespace Scripters.Regula.Platform.Migrations
                 })
                 .Annotation("MySQL:Charset", "utf8mb4");
 
+            migrationBuilder.CreateTable(
+                name: "driver_locations",
+                columns: table => new
+                {
+                    id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    delivery_id = table.Column<int>(type: "int", nullable: false),
+                    driver_id = table.Column<int>(type: "int", nullable: false),
+                    latitude = table.Column<double>(type: "double", nullable: false),
+                    longitude = table.Column<double>(type: "double", nullable: false),
+                    last_updated = table.Column<DateTime>(type: "datetime(6)", nullable: false),
+                    eta = table.Column<DateTime>(type: "datetime(6)", nullable: true),
+                    created_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true),
+                    updated_at = table.Column<DateTimeOffset>(type: "datetime", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("p_k_driver_locations", x => x.id);
+                    table.ForeignKey(
+                        name: "f_k_driver_locations_deliveries_delivery_id",
+                        column: x => x.delivery_id,
+                        principalTable: "deliveries",
+                        principalColumn: "id",
+                        onDelete: ReferentialAction.Cascade);
+                })
+                .Annotation("MySQL:Charset", "utf8mb4");
+
             migrationBuilder.InsertData(
                 table: "commercial_customers",
                 columns: new[] { "id", "active_debt_amount", "created_at", "debt_count", "name", "updated_at" },
                 values: new object[] { 1, 0m, null, 0, "Cliente de prueba", null });
 
             migrationBuilder.InsertData(
+                table: "delivery_responsibles",
+                columns: new[] { "id", "created_at", "name", "updated_at" },
+                values: new object[] { 1, null, "Responsable de prueba", null });
+
+            migrationBuilder.InsertData(
+                table: "delivery_vehicles",
+                columns: new[] { "id", "brand", "created_at", "plate", "type", "updated_at" },
+                values: new object[] { 1, "Toyota", null, "ABC-123", "Van", null });
+
+            migrationBuilder.InsertData(
                 table: "deliveries",
-                columns: new[] { "id", "created_at", "driver_id", "updated_at" },
-                values: new object[] { 1, null, 101, null });
+                columns: new[] { "id", "created_at", "delivered_at", "driver_id", "item_count", "responsible_id", "scheduled_time", "status", "updated_at", "vehicle_id" },
+                values: new object[] { 1, null, null, 101, 5, 1, new DateTime(2026, 6, 16, 9, 0, 0, 0, DateTimeKind.Unspecified), "PENDING", null, 1 });
 
             migrationBuilder.CreateIndex(
                 name: "i_x_commercial_daily_sales_customer_id",
@@ -201,6 +263,16 @@ namespace Scripters.Regula.Platform.Migrations
                 name: "i_x_commercial_debts_customer_id",
                 table: "commercial_debts",
                 column: "customer_id");
+
+            migrationBuilder.CreateIndex(
+                name: "i_x_deliveries_responsible_id",
+                table: "deliveries",
+                column: "responsible_id");
+
+            migrationBuilder.CreateIndex(
+                name: "i_x_deliveries_vehicle_id",
+                table: "deliveries",
+                column: "vehicle_id");
 
             migrationBuilder.CreateIndex(
                 name: "i_x_driver_locations_delivery_id",
@@ -231,6 +303,12 @@ namespace Scripters.Regula.Platform.Migrations
 
             migrationBuilder.DropTable(
                 name: "commercial_customers");
+
+            migrationBuilder.DropTable(
+                name: "delivery_responsibles");
+
+            migrationBuilder.DropTable(
+                name: "delivery_vehicles");
         }
     }
 }
