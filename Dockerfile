@@ -1,23 +1,11 @@
 ﻿FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
-USER $APP_UID
 WORKDIR /app
-EXPOSE 8080
-EXPOSE 8081
-
-FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
-ARG BUILD_CONFIGURATION=Release
-WORKDIR /src
 COPY ["Scripters.Regula.Platform/Scripters.Regula.Platform.csproj", "Scripters.Regula.Platform/"]
 RUN dotnet restore "Scripters.Regula.Platform/Scripters.Regula.Platform.csproj"
 COPY . .
-WORKDIR "/src/Scripters.Regula.Platform"
 RUN dotnet build "./Scripters.Regula.Platform.csproj" -c $BUILD_CONFIGURATION -o /app/build
-
-FROM build AS publish
-ARG BUILD_CONFIGURATION=Release
-RUN dotnet publish "./Scripters.Regula.Platform.csproj" -c $BUILD_CONFIGURATION -o /app/publish /p:UseAppHost=false
-
-FROM base AS final
+FROM mcr.microsoft.com/dotnet/aspnet:10.0
 WORKDIR /app
-COPY --from=publish /app/publish .
+COPY --from=builder /app/out .
+EXPOSE 80
 ENTRYPOINT ["dotnet", "Scripters.Regula.Platform.dll"]
