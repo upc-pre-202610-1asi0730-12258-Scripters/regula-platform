@@ -3,5 +3,12 @@ namespace Scripters.Regula.Platform.InventoryManagement.Domain.Model;
 public enum InventoryManagementError
 {
     None,
-    InventoryNotFound
+    InventoryNotFound,
+    InvalidInventoryType,
+    InsufficientStock,
+    InvalidProviderName,
+    InvalidOutboundType,
+    OperationCancelled,
+    DatabaseError,
+    InternalServerError
 }

@@ -6,19 +6,19 @@ public class DistributorMovement : Movement
 {
     public DistributorMovement()
     {
-        ProviderName = new ProviderName("N/A");
     }
 
     public DistributorMovement(
-        EMovementType movementType,
-        ECylinderType cylinderType,
-        Quantity      quantity,
-        ProviderName  providerName,
-        ProfileId     profileId)
-        : base(movementType, cylinderType, quantity, profileId)
+        EMovementType  movementType,
+        ECylinderType  cylinderType,
+        Quantity       quantity,
+        ProviderName   providerName,
+        EOutboundType? outboundType,
+        ProfileId      profileId)
+        : base(movementType, cylinderType, quantity, providerName, profileId)
     {
-        ProviderName = providerName;
+        OutboundType = outboundType;
     }
 
-    public ProviderName ProviderName { get; private set; }
+    public EOutboundType? OutboundType { get; private set; }
 }

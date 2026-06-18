@@ -1,6 +1,7 @@
 using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Localization;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi;
 using Scripters.Regula.Platform.CommercialManagement.Application.CommandServices;
@@ -17,10 +18,14 @@ using Scripters.Regula.Platform.Iam.Domain.Repositories;
 using Scripters.Regula.Platform.Iam.Infrastructure.Hashing.BCrypt;
 using Scripters.Regula.Platform.Iam.Infrastructure.Persistence.EFC.Repositories;
 using Scripters.Regula.Platform.Iam.Infrastructure.Tokens.JWT;
+using Cortex.Mediator.DependencyInjection;
+using Scripters.Regula.Platform.InventoryManagement.Application.CommandServices;
+using Scripters.Regula.Platform.InventoryManagement.Application.Internal.CommandServices;
 using Scripters.Regula.Platform.InventoryManagement.Application.Internal.QueryServices;
 using Scripters.Regula.Platform.InventoryManagement.Application.QueryServices;
 using Scripters.Regula.Platform.InventoryManagement.Domain.Repositories;
 using Scripters.Regula.Platform.InventoryManagement.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
+using Scripters.Regula.Platform.InventoryManagement.Resources;
 using Scripters.Regula.Platform.Shared.Domain.Repositories;
 using Scripters.Regula.Platform.Shared.Infrastructure.Interfaces.AspNetCore.Configuration;
 using Scripters.Regula.Platform.Shared.Infrastructure.Persistence.EFC.Configuration;
@@ -69,6 +74,9 @@ builder.Services.AddDbContext<AppDbContext>((serviceProvider, options) =>
 // Localization
 builder.Services.AddLocalization();
 
+// Register IStringLocalizer for InventoryManagementMessages
+builder.Services.AddSingleton<IStringLocalizer<InventoryManagementMessages>, StringLocalizer<InventoryManagementMessages>>();
+
 // Register the custom ProblemDetailsFactory
 builder.Services.AddSingleton<ProblemDetailsFactory>();
 
@@ -77,7 +85,11 @@ builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
 // ── InventoryManagement Bounded Context ────────────────────────────────────
 builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
+builder.Services.AddScoped<IInventoryCommandService, InventoryCommandService>();
 builder.Services.AddScoped<IInventoryQueryService, InventoryQueryService>();
+
+// Cortex Mediator for InventoryManagement domain events
+builder.Services.AddCortexMediator([typeof(Program)]);
 
 // ── DeliveryTracking Bounded Context ───────────────────────────────────────
 builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();

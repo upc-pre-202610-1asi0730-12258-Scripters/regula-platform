@@ -30,9 +30,21 @@
     </ItemGroup>
 
     <ItemGroup>
-        <Folder Include="Shared\Infrastructure\Mediator\Cortex\Configuration\" />
+        <Compile Remove="regula-BACKEND\**" />
+        <Content Remove="regula-BACKEND\**" />
+        <EmbeddedResource Remove="regula-BACKEND\**" />
+        <None Remove="regula-BACKEND\**" />
+    </ItemGroup>
+
+    <ItemGroup>
         <Folder Include="Shared\Infrastructure\Pipeline\Middleware\Components\" />
         <Folder Include="Shared\Infrastructure\Pipeline\Middleware\Extensions\" />
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Update="InventoryManagement\Resources\InventoryManagementMessages.es.resx">
+            <DependentUpon>InventoryManagementMessages.cs</DependentUpon>
+        </EmbeddedResource>
     </ItemGroup>
 
 </Project>

@@ -6,27 +6,28 @@ public class CompanyMovement : Movement
 {
     public CompanyMovement()
     {
-        OriginDestination = new OriginDestination(string.Empty);
-        MovementReason    = new MovementReason(string.Empty);
-        Observation       = new Observation(string.Empty);
+        Destination    = new Destination(string.Empty);
+        MovementReason = new MovementReason(string.Empty);
+        Observation    = new Observation(string.Empty);
     }
 
     public CompanyMovement(
-        EMovementType     movementType,
-        ECylinderType     cylinderType,
-        Quantity          quantity,
-        OriginDestination originDestination,
-        MovementReason    movementReason,
-        Observation       observation,
-        ProfileId         profileId)
-        : base(movementType, cylinderType, quantity, profileId)
+        EMovementType  movementType,
+        ECylinderType  cylinderType,
+        Quantity       quantity,
+        ProviderName   providerName,
+        Destination    destination,
+        MovementReason movementReason,
+        Observation    observation,
+        ProfileId      profileId)
+        : base(movementType, cylinderType, quantity, providerName, profileId)
     {
-        OriginDestination = originDestination;
-        MovementReason    = movementReason;
-        Observation       = observation;
+        Destination    = destination;
+        MovementReason = movementReason;
+        Observation    = observation;
     }
 
-    public OriginDestination OriginDestination { get; private set; }
-    public MovementReason    MovementReason    { get; private set; }
-    public Observation       Observation       { get; private set; }
+    public Destination    Destination    { get; private set; }
+    public MovementReason MovementReason { get; private set; }
+    public Observation    Observation    { get; private set; }
 }

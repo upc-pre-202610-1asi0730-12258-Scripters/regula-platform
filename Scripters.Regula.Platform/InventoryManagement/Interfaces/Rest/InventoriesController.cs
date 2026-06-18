@@ -1,12 +1,14 @@
 using System.Net.Mime;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
+using Scripters.Regula.Platform.InventoryManagement.Application.CommandServices;
 using Scripters.Regula.Platform.InventoryManagement.Application.QueryServices;
 using Scripters.Regula.Platform.InventoryManagement.Domain.Model.Queries;
+using Scripters.Regula.Platform.InventoryManagement.Domain.Model.ValueObjects;
 using Scripters.Regula.Platform.InventoryManagement.Interfaces.Rest.Resources;
 using Scripters.Regula.Platform.InventoryManagement.Interfaces.Rest.Transform;
 using Scripters.Regula.Platform.Shared.Interfaces.Rest.ProblemDetails;
-using Scripters.Regula.Platform.Shared.Resources.Errors;
+using Scripters.Regula.Platform.InventoryManagement.Resources;
 using Swashbuckle.AspNetCore.Annotations;
 
 namespace Scripters.Regula.Platform.InventoryManagement.Interfaces.Rest;
@@ -16,12 +18,13 @@ namespace Scripters.Regula.Platform.InventoryManagement.Interfaces.Rest;
 [Produces(MediaTypeNames.Application.Json)]
 [SwaggerTag("Inventory Management Endpoints.")]
 public class InventoriesController(
+    IInventoryCommandService inventoryCommandService,
     IInventoryQueryService inventoryQueryService,
-    IStringLocalizer<ErrorMessages> errorLocalizer,
+    IStringLocalizer<InventoryManagementMessages> errorLocalizer,
     ProblemDetailsFactory problemDetailsFactory)
     : ControllerBase
 {
-    private readonly IStringLocalizer<ErrorMessages> _errorLocalizer = errorLocalizer;
+    private readonly IStringLocalizer<InventoryManagementMessages> _errorLocalizer = errorLocalizer;
     private readonly ProblemDetailsFactory _problemDetailsFactory = problemDetailsFactory;
 
     [HttpGet("{inventoryId:long}")]
@@ -38,5 +41,88 @@ public class InventoriesController(
         return InventoryManagementActionResultAssembler.ToActionResultFromGetInventoryByIdResult(
             this, inventory, _errorLocalizer, _problemDetailsFactory,
             found => Ok(InventoryResourceFromEntityAssembler.ToResourceFromEntity(found)));
+    }
+
+    [HttpPost("{inventoryId:long}/company-movements")]
+    [SwaggerOperation(Summary = "Register company movement", OperationId = "CreateCompanyMovement")]
+    [SwaggerResponse(StatusCodes.Status201Created, "Movement registered", typeof(InventoryCompanyMovementItem))]
+    public async Task<IActionResult> CreateCompanyMovement(
+        [FromRoute] long inventoryId,
+        [FromBody] CreateCompanyMovementResource resource,
+        CancellationToken cancellationToken)
+    {
+        var command = CreateCompanyMovementCommandFromResourceAssembler.ToCommandFromResource(inventoryId, resource);
+        var result = await inventoryCommandService.Handle(command, cancellationToken);
+
+        return InventoryManagementActionResultAssembler.ToActionResultFromCommandResult(
+            this, result, _errorLocalizer, _problemDetailsFactory,
+            movement => Created(
+                $"/api/v1/inventories/{inventoryId}/company-movements",
+                InventoryItemFromEntityAssembler.ToCompanyMovementItem(movement)));
+    }
+
+    [HttpGet("{inventoryId:long}/company-movements")]
+    [SwaggerOperation(Summary = "Get company movements", OperationId = "GetCompanyMovements")]
+    [SwaggerResponse(StatusCodes.Status200OK, "Company movements", typeof(IEnumerable<InventoryCompanyMovementItem>))]
+    public async Task<IActionResult> GetCompanyMovements(
+        [FromRoute] long inventoryId,
+        [FromQuery] string? movementType,
+        CancellationToken cancellationToken)
+    {
+        EMovementType? type = movementType is null
+            ? null
+            : Enum.Parse<EMovementType>(movementType, ignoreCase: true);
+
+        var movements = await inventoryQueryService.Handle(
+            new GetCompanyMovementsByInventoryIdQuery(inventoryId, type), cancellationToken);
+
+        return Ok(movements.Select(InventoryItemFromEntityAssembler.ToCompanyMovementItem));
+    }
+
+    [HttpPost("{inventoryId:long}/distributor-movements")]
+    [SwaggerOperation(Summary = "Register distributor movement", OperationId = "CreateDistributorMovement")]
+    [SwaggerResponse(StatusCodes.Status201Created, "Movement registered", typeof(InventoryDistributorMovementItem))]
+    public async Task<IActionResult> CreateDistributorMovement(
+        [FromRoute] long inventoryId,
+        [FromBody] CreateDistributorMovementResource resource,
+        CancellationToken cancellationToken)
+    {
+        var command = CreateDistributorMovementCommandFromResourceAssembler.ToCommandFromResource(inventoryId, resource);
+        var result = await inventoryCommandService.Handle(command, cancellationToken);
+
+        return InventoryManagementActionResultAssembler.ToActionResultFromCommandResult(
+            this, result, _errorLocalizer, _problemDetailsFactory,
+            movement => Created(
+                $"/api/v1/inventories/{inventoryId}/distributor-movements",
+                InventoryItemFromEntityAssembler.ToDistributorMovementItem(movement)));
+    }
+
+    [HttpGet("{inventoryId:long}/distributor-movements")]
+    [SwaggerOperation(Summary = "Get distributor movements", OperationId = "GetDistributorMovements")]
+    public async Task<IActionResult> GetDistributorMovements(
+        [FromRoute] long inventoryId,
+        [FromQuery] string? movementType,
+        CancellationToken cancellationToken)
+    {
+        EMovementType? type = movementType is null
+            ? null
+            : Enum.Parse<EMovementType>(movementType, ignoreCase: true);
+
+        var movements = await inventoryQueryService.Handle(
+            new GetDistributorMovementsByInventoryIdQuery(inventoryId, type), cancellationToken);
+
+        return Ok(movements.Select(InventoryItemFromEntityAssembler.ToDistributorMovementItem));
+    }
+
+    [HttpGet("{inventoryId:long}/stock")]
+    [SwaggerOperation(Summary = "Get stock", OperationId = "GetStock")]
+    public async Task<IActionResult> GetStock(
+        [FromRoute] long inventoryId,
+        CancellationToken cancellationToken)
+    {
+        var stock = await inventoryQueryService.Handle(
+            new GetStockByInventoryIdQuery(inventoryId), cancellationToken);
+
+        return Ok(stock.Select(InventoryItemFromEntityAssembler.ToStockItem));
     }
 }
