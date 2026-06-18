@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <data name="InventoryMovementRegisteredSuccessfully" xml:space="preserve">
+    <value>Movimiento de inventario registrado exitosamente.</value>
+  </data>
+  <data name="ProviderCreatedSuccessfully" xml:space="preserve">
+    <value>Proveedor creado exitosamente.</value>
+  </data>
+  <data name="ProviderUpdatedSuccessfully" xml:space="preserve">
+    <value>Proveedor actualizado exitosamente.</value>
+  </data>
+  <data name="InventoryNotFound" xml:space="preserve">
+    <value>Inventario no encontrado.</value>
+  </data>
+  <data name="InvalidInventoryType" xml:space="preserve">
+    <value>La operación no es válida para este tipo de inventario.</value>
+  </data>
+  <data name="InvalidProviderName" xml:space="preserve">
+    <value>El nombre del proveedor es obligatorio para movimientos de entrada.</value>
+  </data>
+  <data name="InvalidOutboundType" xml:space="preserve">
+    <value>El tipo de salida es obligatorio para movimientos de salida.</value>
+  </data>
+  <data name="InsufficientStock" xml:space="preserve">
+    <value>Stock insuficiente para esta operación.</value>
+  </data>
+  <data name="OperationCancelled" xml:space="preserve">
+    <value>La operación fue cancelada.</value>
+  </data>
+  <data name="DatabaseError" xml:space="preserve">
+    <value>Ocurrió un error en la base de datos.</value>
+  </data>
+  <data name="InternalServerError" xml:space="preserve">
+    <value>Ocurrió un error interno del servidor.</value>
+  </data>
+</root>
