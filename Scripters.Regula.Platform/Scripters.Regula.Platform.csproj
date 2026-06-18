@@ -31,6 +31,7 @@
     </ItemGroup>
 
     <ItemGroup>
+        <Folder Include="Alerts\" />
         <Folder Include="Shared\Infrastructure\Mediator\Cortex\Configuration\" />
         <Folder Include="Shared\Infrastructure\Pipeline\Middleware\Components\" />
         <Folder Include="Shared\Infrastructure\Pipeline\Middleware\Extensions\" />

@@ -1,5 +1,7 @@
 using System.Reflection;
 using Microsoft.EntityFrameworkCore;
+using Scripters.Regula.Platform.Alerts.Domain.Model.Aggregates;
+using Scripters.Regula.Platform.Alerts.Infrastructure.Persistence.EFC.Configuration.Extensions;
 using Scripters.Regula.Platform.CommercialManagement.Infrastructure.Persistence.EFC.Configuration.Extensions;
 using Scripters.Regula.Platform.CommercialManagement.Domain.Model.Entities;
 using Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Aggregates;
@@ -13,6 +15,7 @@ namespace Scripters.Regula.Platform.Shared.Infrastructure.Persistence.EFC.Config
 
 public class AppDbContext(DbContextOptions options) : DbContext(options)
 {
+    public DbSet<Alert> Alerts { get; set; }
     public DbSet<User> Users { get; set; }
     public DbSet<Delivery> Deliveries { get; set; }
     public DbSet<DriverLocation> DriverLocations { get; set; }
@@ -30,6 +33,7 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
     {
         base.OnModelCreating(builder);
 
+        builder.ApplyAlertsConfiguration();
         builder.ApplyCommercialManagementConfiguration();
         builder.ApplyDeliveryTrackingConfiguration();
 
