@@ -2,10 +2,6 @@ using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
-using Scripters.Regula.Platform.Alerts.Application.Internal.QueryServices;
-using Scripters.Regula.Platform.Alerts.Application.QueryServices;
-using Scripters.Regula.Platform.Alerts.Domain.Repositories;
-using Scripters.Regula.Platform.Alerts.Infrastructure.Persistence.EFC.Repositories;
 using Scripters.Regula.Platform.CommercialManagement.Application.CommandServices;
 using Scripters.Regula.Platform.CommercialManagement.Application.Internal.CommandServices;
 using Scripters.Regula.Platform.CommercialManagement.Domain.Repositories;
@@ -39,10 +35,6 @@ builder.Services.AddDbContext<AppDbContext>(options =>
     if (connectionString != null)
         options.UseMySQL(connectionString);
 });
-
-// Alerts Bounded Context
-builder.Services.AddScoped<IAlertRepository, AlertRepository>();
-builder.Services.AddScoped<IAlertQueryService, AlertQueryService>();
 
 // Delivery Tracking Bounded Context
 builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();
