@@ -6,6 +6,8 @@ using Scripters.Regula.Platform.CommercialManagement.Application.CommandServices
 using Scripters.Regula.Platform.CommercialManagement.Application.Internal.CommandServices;
 using Scripters.Regula.Platform.CommercialManagement.Domain.Repositories;
 using Scripters.Regula.Platform.CommercialManagement.Infrastructure.Persistence.EFC.Repositories;
+using Scripters.Regula.Platform.CommercialManagement.Application.Internal.QueryServices;
+using Scripters.Regula.Platform.CommercialManagement.Application.QueryServices;
 using Scripters.Regula.Platform.DeliveryTracking.Application.CommandServices;
 using Scripters.Regula.Platform.DeliveryTracking.Application.Internal.CommandServices;
 using Scripters.Regula.Platform.DeliveryTracking.Application.Internal.QueryServices;
@@ -30,12 +32,23 @@ builder.Services.AddControllers();
 // Configure Database
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 
-builder.Services.AddDbContext<AppDbContext>(options =>
+builder.Services.AddDbContext<AppDbContext>((serviceProvider, options) =>
 {
-    if (connectionString != null)
-        options.UseMySQL(connectionString);
-});
+    var connectionStringTemplate = builder.Configuration.GetConnectionString("DefaultConnection");
+    if (string.IsNullOrWhiteSpace(connectionStringTemplate))
+        throw new InvalidOperationException("Database connection string is not set in the configuration.");
 
+    var connectionString = Environment.ExpandEnvironmentVariables(connectionStringTemplate);
+    if (string.IsNullOrWhiteSpace(connectionString))
+        throw new InvalidOperationException("Database connection string is not set in the configuration.");
+
+    options.UseMySQL(connectionString)
+        .UseLoggerFactory(serviceProvider.GetRequiredService<ILoggerFactory>())
+        .EnableDetailedErrors();
+
+    if (builder.Environment.IsDevelopment())
+        options.EnableSensitiveDataLogging();
+});
 // Delivery Tracking Bounded Context
 builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();
 builder.Services.AddScoped<IDriverLocationRepository, DriverLocationRepository>();
@@ -50,7 +63,7 @@ builder.Services.AddScoped<ICustomerDebtCommandService, CustomerDebtCommandServi
 builder.Services.AddScoped<ICommercialDebtPaymentRepository, CommercialDebtPaymentRepository>();
 builder.Services.AddScoped<ICommercialDailySaleRepository, CommercialDailySaleRepository>();
 builder.Services.AddScoped<IDailySaleCommandService, DailySaleCommandService>();
-
+builder.Services.AddScoped<IDailySaleQueryService, DailySaleQueryService>();
 // IAM Bounded Context
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserCommandService, UserCommandService>();
@@ -88,12 +101,8 @@ builder.Services.AddSwaggerGen();
 var app = builder.Build();
 
 // Configure the HTTP request pipeline
-if (app.Environment.IsDevelopment())
-{
     app.UseSwagger();
     app.UseSwaggerUI();
-}
-
 app.UseHttpsRedirection();
 
 app.UseAuthentication();
