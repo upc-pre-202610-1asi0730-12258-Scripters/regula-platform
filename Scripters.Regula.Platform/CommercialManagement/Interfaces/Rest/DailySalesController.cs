@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Mvc;
 using Scripters.Regula.Platform.CommercialManagement.Application.CommandServices;
+using Scripters.Regula.Platform.CommercialManagement.Application.QueryServices;
 using Scripters.Regula.Platform.CommercialManagement.Domain.Errors;
+using Scripters.Regula.Platform.CommercialManagement.Domain.Model.Queries;
 using Scripters.Regula.Platform.CommercialManagement.Interfaces.Rest.Resources;
 using Scripters.Regula.Platform.CommercialManagement.Interfaces.Rest.Transform;
 using Swashbuckle.AspNetCore.Annotations;
@@ -10,8 +12,28 @@ namespace Scripters.Regula.Platform.CommercialManagement.Interfaces.Rest;
 [ApiController]
 [Route("api/v1/daily-sales")]
 [Produces("application/json")]
-public class DailySalesController(IDailySaleCommandService dailySaleCommandService) : ControllerBase
+public class DailySalesController(
+    IDailySaleCommandService dailySaleCommandService,
+    IDailySaleQueryService dailySaleQueryService) : ControllerBase
 {
+    [HttpGet]
+    [SwaggerOperation(
+        Summary = "Get all daily sales",
+        Description = "Gets all registered daily sales ordered by creation date descending.",
+        OperationId = "GetAllDailySales")]
+    [SwaggerResponse(StatusCodes.Status200OK, "Daily sales found", typeof(IEnumerable<DailySaleResource>))]
+    public async Task<IActionResult> GetAllDailySales(CancellationToken cancellationToken)
+    {
+        var query = new GetAllDailySalesQuery();
+
+        var dailySales = await dailySaleQueryService.Handle(query, cancellationToken);
+
+        var dailySaleResources = dailySales
+            .Select(DailySaleResourceFromEntityAssembler.ToResourceFromEntity);
+
+        return Ok(dailySaleResources);
+    }
+
     [HttpPost]
     [SwaggerOperation(
         Summary = "Create daily sale",
