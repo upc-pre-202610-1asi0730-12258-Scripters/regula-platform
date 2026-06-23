@@ -6,6 +6,8 @@ using Scripters.Regula.Platform.CommercialManagement.Application.CommandServices
 using Scripters.Regula.Platform.CommercialManagement.Application.Internal.CommandServices;
 using Scripters.Regula.Platform.CommercialManagement.Domain.Repositories;
 using Scripters.Regula.Platform.CommercialManagement.Infrastructure.Persistence.EFC.Repositories;
+using Scripters.Regula.Platform.CommercialManagement.Application.Internal.QueryServices;
+using Scripters.Regula.Platform.CommercialManagement.Application.QueryServices;
 using Scripters.Regula.Platform.DeliveryTracking.Application.CommandServices;
 using Scripters.Regula.Platform.DeliveryTracking.Application.Internal.CommandServices;
 using Scripters.Regula.Platform.DeliveryTracking.Application.Internal.QueryServices;
@@ -61,7 +63,7 @@ builder.Services.AddScoped<ICustomerDebtCommandService, CustomerDebtCommandServi
 builder.Services.AddScoped<ICommercialDebtPaymentRepository, CommercialDebtPaymentRepository>();
 builder.Services.AddScoped<ICommercialDailySaleRepository, CommercialDailySaleRepository>();
 builder.Services.AddScoped<IDailySaleCommandService, DailySaleCommandService>();
-
+builder.Services.AddScoped<IDailySaleQueryService, DailySaleQueryService>();
 // IAM Bounded Context
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserCommandService, UserCommandService>();
