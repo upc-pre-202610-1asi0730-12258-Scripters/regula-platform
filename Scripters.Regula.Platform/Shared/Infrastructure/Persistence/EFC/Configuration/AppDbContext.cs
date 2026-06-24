@@ -6,6 +6,7 @@ using Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Aggregates;
 using Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Entities;
 using Scripters.Regula.Platform.DeliveryTracking.Infrastructure.Persistence.EFC.Configuration.Extensions;
 using Scripters.Regula.Platform.Iam.Domain.Model.Aggregates;
+using Scripters.Regula.Platform.InventoryManagement.Infrastructure.Persistence.EntityFrameworkCore.Configuration.Extensions;
 using Scripters.Regula.Platform.Shared.Infrastructure.Persistence.EFC.Configuration.Extensions;
 using Scripters.Regula.Platform.Shared.Infrastructure.Persistence.EFC.Interceptors;
 
@@ -32,6 +33,7 @@ public class AppDbContext(DbContextOptions options) : DbContext(options)
 
         builder.ApplyCommercialManagementConfiguration();
         builder.ApplyDeliveryTrackingConfiguration();
+        builder.ApplyInventoryManagementConfiguration();
 
         builder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
 

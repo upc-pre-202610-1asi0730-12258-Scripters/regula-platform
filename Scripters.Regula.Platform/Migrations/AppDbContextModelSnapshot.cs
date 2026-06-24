@@ -19,6 +19,53 @@ namespace Scripters.Regula.Platform.Migrations
                 .HasAnnotation("ProductVersion", "10.0.8")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
 
+            modelBuilder.Entity("Scripters.Regula.Platform.Alerts.Domain.Model.Aggregates.Alert", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<DateTimeOffset?>("CreatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("Criticality")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("criticality");
+
+                    b.Property<string>("DetectedAt")
+                        .IsRequired()
+                        .HasMaxLength(50)
+                        .HasColumnType("varchar(50)")
+                        .HasColumnName("detected_at");
+
+                    b.Property<double>("PpmLevel")
+                        .HasColumnType("double")
+                        .HasColumnName("ppm_level");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("longtext")
+                        .HasColumnName("status");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at");
+
+                    b.Property<string>("Zone")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("zone");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_alerts");
+
+                    b.ToTable("alerts", (string)null);
+                });
+
             modelBuilder.Entity("Scripters.Regula.Platform.CommercialManagement.Domain.Model.Aggregates.CommercialCustomer", b =>
                 {
                     b.Property<int>("Id")

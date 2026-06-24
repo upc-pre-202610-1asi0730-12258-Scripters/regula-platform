@@ -11,8 +11,8 @@ using Scripters.Regula.Platform.Shared.Infrastructure.Persistence.EFC.Configurat
 namespace Scripters.Regula.Platform.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    [Migration("20260616224827_InitialCreate")]
-    partial class InitialCreate
+    [Migration("20260618162136_AddInventoryManagement")]
+    partial class AddInventoryManagement
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -65,87 +65,6 @@ namespace Scripters.Regula.Platform.Migrations
                             DebtCount = 0,
                             Name = "Cliente de prueba"
                         });
-                });
-
-            modelBuilder.Entity("Scripters.Regula.Platform.CommercialManagement.Domain.Model.Entities.CommercialDailySale", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id");
-
-                    b.Property<DateTimeOffset?>("CreatedAt")
-                        .HasColumnType("datetime")
-                        .HasColumnName("created_at");
-
-                    b.Property<int?>("CustomerId")
-                        .HasColumnType("int")
-                        .HasColumnName("customer_id");
-
-                    b.Property<string>("CustomerName")
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("customer_name");
-
-                    b.Property<string>("CylinderType")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("cylinder_type");
-
-                    b.Property<string>("CylinderTypeId")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)")
-                        .HasColumnName("cylinder_type_id");
-
-                    b.Property<string>("DistributorName")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("distributor_name");
-
-                    b.Property<string>("PaymentType")
-                        .IsRequired()
-                        .HasColumnType("longtext")
-                        .HasColumnName("payment_type");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int")
-                        .HasColumnName("quantity");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("longtext")
-                        .HasColumnName("status");
-
-                    b.Property<decimal>("TotalAmount")
-                        .HasPrecision(10, 2)
-                        .HasColumnType("decimal(10,2)")
-                        .HasColumnName("total_amount");
-
-                    b.Property<string>("TransactionCode")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)")
-                        .HasColumnName("transaction_code");
-
-                    b.Property<decimal>("UnitPrice")
-                        .HasPrecision(10, 2)
-                        .HasColumnType("decimal(10,2)")
-                        .HasColumnName("unit_price");
-
-                    b.Property<DateTimeOffset?>("UpdatedAt")
-                        .HasColumnType("datetime")
-                        .HasColumnName("updated_at");
-
-                    b.HasKey("Id")
-                        .HasName("p_k_commercial_daily_sales");
-
-                    b.HasIndex("CustomerId")
-                        .HasDatabaseName("i_x_commercial_daily_sales_customer_id");
-
-                    b.ToTable("commercial_daily_sales", (string)null);
                 });
 
             modelBuilder.Entity("Scripters.Regula.Platform.CommercialManagement.Domain.Model.Entities.CommercialDebt", b =>
@@ -264,48 +183,16 @@ namespace Scripters.Regula.Platform.Migrations
                         .HasColumnType("datetime")
                         .HasColumnName("created_at");
 
-                    b.Property<string>("DeliveredAt")
-                        .HasMaxLength(5)
-                        .HasColumnType("varchar(5)")
-                        .HasColumnName("delivered_at");
-
                     b.Property<int>("DriverId")
                         .HasColumnType("int")
                         .HasColumnName("driver_id");
-
-                    b.Property<int>("ItemCount")
-                        .HasColumnType("int")
-                        .HasColumnName("item_count");
-
-                    b.Property<int>("ResponsibleId")
-                        .HasColumnType("int")
-                        .HasColumnName("responsible_id");
-
-                    b.Property<DateTime>("ScheduledTime")
-                        .HasColumnType("datetime(6)")
-                        .HasColumnName("scheduled_time");
-
-                    b.Property<string>("Status")
-                        .IsRequired()
-                        .HasColumnType("longtext")
-                        .HasColumnName("status");
 
                     b.Property<DateTimeOffset?>("UpdatedAt")
                         .HasColumnType("datetime")
                         .HasColumnName("updated_at");
 
-                    b.Property<int>("VehicleId")
-                        .HasColumnType("int")
-                        .HasColumnName("vehicle_id");
-
                     b.HasKey("Id")
                         .HasName("p_k_deliveries");
-
-                    b.HasIndex("ResponsibleId")
-                        .HasDatabaseName("i_x_deliveries_responsible_id");
-
-                    b.HasIndex("VehicleId")
-                        .HasDatabaseName("i_x_deliveries_vehicle_id");
 
                     b.ToTable("deliveries", (string)null);
 
@@ -313,94 +200,7 @@ namespace Scripters.Regula.Platform.Migrations
                         new
                         {
                             Id = 1,
-                            DriverId = 101,
-                            ItemCount = 5,
-                            ResponsibleId = 1,
-                            ScheduledTime = new DateTime(2026, 6, 16, 9, 0, 0, 0, DateTimeKind.Unspecified),
-                            Status = "PENDING",
-                            VehicleId = 1
-                        });
-                });
-
-            modelBuilder.Entity("Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Entities.DeliveryResponsible", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id");
-
-                    b.Property<DateTimeOffset?>("CreatedAt")
-                        .HasColumnType("datetime")
-                        .HasColumnName("created_at");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("name");
-
-                    b.Property<DateTimeOffset?>("UpdatedAt")
-                        .HasColumnType("datetime")
-                        .HasColumnName("updated_at");
-
-                    b.HasKey("Id")
-                        .HasName("p_k_delivery_responsibles");
-
-                    b.ToTable("delivery_responsibles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Name = "Responsable de prueba"
-                        });
-                });
-
-            modelBuilder.Entity("Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Entities.DeliveryVehicle", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("id");
-
-                    b.Property<string>("Brand")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("brand");
-
-                    b.Property<DateTimeOffset?>("CreatedAt")
-                        .HasColumnType("datetime")
-                        .HasColumnName("created_at");
-
-                    b.Property<string>("Plate")
-                        .IsRequired()
-                        .HasMaxLength(20)
-                        .HasColumnType("varchar(20)")
-                        .HasColumnName("plate");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("varchar(50)")
-                        .HasColumnName("type");
-
-                    b.Property<DateTimeOffset?>("UpdatedAt")
-                        .HasColumnType("datetime")
-                        .HasColumnName("updated_at");
-
-                    b.HasKey("Id")
-                        .HasName("p_k_delivery_vehicles");
-
-                    b.ToTable("delivery_vehicles", (string)null);
-
-                    b.HasData(
-                        new
-                        {
-                            Id = 1,
-                            Brand = "Toyota",
-                            Plate = "ABC-123",
-                            Type = "Van"
+                            DriverId = 101
                         });
                 });
 
@@ -475,15 +275,186 @@ namespace Scripters.Regula.Platform.Migrations
                     b.ToTable("users");
                 });
 
-            modelBuilder.Entity("Scripters.Regula.Platform.CommercialManagement.Domain.Model.Entities.CommercialDailySale", b =>
+            modelBuilder.Entity("Scripters.Regula.Platform.InventoryManagement.Domain.Model.Aggregates.Inventory", b =>
                 {
-                    b.HasOne("Scripters.Regula.Platform.CommercialManagement.Domain.Model.Aggregates.CommercialCustomer", "Customer")
-                        .WithMany()
-                        .HasForeignKey("CustomerId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .HasConstraintName("f_k_commercial_daily_sales_commercial_customers_customer_id");
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
 
-                    b.Navigation("Customer");
+                    b.Property<DateTimeOffset?>("CreatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("InventoryType")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("inventory_type");
+
+                    b.Property<long>("OwnerProfileId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("owner_profile_id");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_inventories");
+
+                    b.HasIndex("OwnerProfileId", "InventoryType")
+                        .IsUnique()
+                        .HasDatabaseName("i_x_inventories_owner_profile_id_inventory_type");
+
+                    b.ToTable("inventories", (string)null);
+                });
+
+            modelBuilder.Entity("Scripters.Regula.Platform.InventoryManagement.Domain.Model.Entities.GasCylinderStock", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<int>("Available")
+                        .HasColumnType("int")
+                        .HasColumnName("available");
+
+                    b.Property<DateTimeOffset?>("CreatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("CylinderType")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)")
+                        .HasColumnName("cylinder_type");
+
+                    b.Property<int>("InTransit")
+                        .HasColumnType("int")
+                        .HasColumnName("in_transit");
+
+                    b.Property<int>("Observed")
+                        .HasColumnType("int")
+                        .HasColumnName("observed");
+
+                    b.Property<int>("OutOfService")
+                        .HasColumnType("int")
+                        .HasColumnName("out_of_service");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at");
+
+                    b.Property<int?>("inventory_id")
+                        .HasColumnType("int")
+                        .HasColumnName("inventory_id");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_gas_cylinder_stocks");
+
+                    b.HasIndex("inventory_id")
+                        .HasDatabaseName("i_x_gas_cylinder_stocks_inventory_id");
+
+                    b.ToTable("gas_cylinder_stocks", (string)null);
+                });
+
+            modelBuilder.Entity("Scripters.Regula.Platform.InventoryManagement.Domain.Model.Entities.Movement", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("id");
+
+                    b.Property<DateTimeOffset?>("CreatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("created_at");
+
+                    b.Property<string>("CylinderType")
+                        .IsRequired()
+                        .HasMaxLength(10)
+                        .HasColumnType("varchar(10)")
+                        .HasColumnName("cylinder_type");
+
+                    b.Property<string>("MovementType")
+                        .IsRequired()
+                        .HasMaxLength(20)
+                        .HasColumnType("varchar(20)")
+                        .HasColumnName("movement_type");
+
+                    b.Property<long>("ProfileId")
+                        .HasColumnType("bigint")
+                        .HasColumnName("profile_id");
+
+                    b.Property<string>("ProviderName")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("provider_name");
+
+                    b.Property<int>("Quantity")
+                        .HasColumnType("int")
+                        .HasColumnName("quantity");
+
+                    b.Property<DateTime>("Timestamp")
+                        .HasColumnType("datetime(6)")
+                        .HasColumnName("timestamp");
+
+                    b.Property<DateTimeOffset?>("UpdatedAt")
+                        .HasColumnType("datetime")
+                        .HasColumnName("updated_at");
+
+                    b.Property<int?>("inventory_id")
+                        .HasColumnType("int")
+                        .HasColumnName("inventory_id");
+
+                    b.HasKey("Id")
+                        .HasName("p_k_movements");
+
+                    b.HasIndex("inventory_id")
+                        .HasDatabaseName("i_x_movements_inventory_id");
+
+                    b.ToTable("movements", (string)null);
+
+                    b.UseTptMappingStrategy();
+                });
+
+            modelBuilder.Entity("Scripters.Regula.Platform.InventoryManagement.Domain.Model.Entities.CompanyMovement", b =>
+                {
+                    b.HasBaseType("Scripters.Regula.Platform.InventoryManagement.Domain.Model.Entities.Movement");
+
+                    b.Property<string>("Destination")
+                        .IsRequired()
+                        .HasMaxLength(200)
+                        .HasColumnType("varchar(200)")
+                        .HasColumnName("destination");
+
+                    b.Property<string>("MovementReason")
+                        .IsRequired()
+                        .HasMaxLength(300)
+                        .HasColumnType("varchar(300)")
+                        .HasColumnName("movement_reason");
+
+                    b.Property<string>("Observation")
+                        .IsRequired()
+                        .HasMaxLength(500)
+                        .HasColumnType("varchar(500)")
+                        .HasColumnName("observation");
+
+                    b.ToTable("company_movements", (string)null);
+                });
+
+            modelBuilder.Entity("Scripters.Regula.Platform.InventoryManagement.Domain.Model.Entities.DistributorMovement", b =>
+                {
+                    b.HasBaseType("Scripters.Regula.Platform.InventoryManagement.Domain.Model.Entities.Movement");
+
+                    b.Property<string>("OutboundType")
+                        .HasMaxLength(30)
+                        .HasColumnType("varchar(30)")
+                        .HasColumnName("outbound_type");
+
+                    b.ToTable("distributor_movements", (string)null);
                 });
 
             modelBuilder.Entity("Scripters.Regula.Platform.CommercialManagement.Domain.Model.Entities.CommercialDebt", b =>
@@ -510,27 +481,6 @@ namespace Scripters.Regula.Platform.Migrations
                     b.Navigation("CustomerDebt");
                 });
 
-            modelBuilder.Entity("Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Aggregates.Delivery", b =>
-                {
-                    b.HasOne("Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Entities.DeliveryResponsible", "Responsible")
-                        .WithMany()
-                        .HasForeignKey("ResponsibleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("f_k_deliveries_delivery_responsibles_responsible_id");
-
-                    b.HasOne("Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Entities.DeliveryVehicle", "Vehicle")
-                        .WithMany()
-                        .HasForeignKey("VehicleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired()
-                        .HasConstraintName("f_k_deliveries_delivery_vehicles_vehicle_id");
-
-                    b.Navigation("Responsible");
-
-                    b.Navigation("Vehicle");
-                });
-
             modelBuilder.Entity("Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Entities.DriverLocation", b =>
                 {
                     b.HasOne("Scripters.Regula.Platform.DeliveryTracking.Domain.Model.Aggregates.Delivery", "Delivery")
@@ -541,6 +491,49 @@ namespace Scripters.Regula.Platform.Migrations
                         .HasConstraintName("f_k_driver_locations_deliveries_delivery_id");
 
                     b.Navigation("Delivery");
+                });
+
+            modelBuilder.Entity("Scripters.Regula.Platform.InventoryManagement.Domain.Model.Entities.GasCylinderStock", b =>
+                {
+                    b.HasOne("Scripters.Regula.Platform.InventoryManagement.Domain.Model.Aggregates.Inventory", null)
+                        .WithMany("StockItems")
+                        .HasForeignKey("inventory_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasConstraintName("f_k_gas_cylinder_stocks_inventories_inventory_id");
+                });
+
+            modelBuilder.Entity("Scripters.Regula.Platform.InventoryManagement.Domain.Model.Entities.Movement", b =>
+                {
+                    b.HasOne("Scripters.Regula.Platform.InventoryManagement.Domain.Model.Aggregates.Inventory", null)
+                        .WithMany("Movements")
+                        .HasForeignKey("inventory_id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasConstraintName("f_k_movements_inventories_inventory_id");
+                });
+
+            modelBuilder.Entity("Scripters.Regula.Platform.InventoryManagement.Domain.Model.Entities.CompanyMovement", b =>
+                {
+                    b.HasOne("Scripters.Regula.Platform.InventoryManagement.Domain.Model.Entities.Movement", null)
+                        .WithOne()
+                        .HasForeignKey("Scripters.Regula.Platform.InventoryManagement.Domain.Model.Entities.CompanyMovement", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Scripters.Regula.Platform.InventoryManagement.Domain.Model.Entities.DistributorMovement", b =>
+                {
+                    b.HasOne("Scripters.Regula.Platform.InventoryManagement.Domain.Model.Entities.Movement", null)
+                        .WithOne()
+                        .HasForeignKey("Scripters.Regula.Platform.InventoryManagement.Domain.Model.Entities.DistributorMovement", "Id")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("Scripters.Regula.Platform.InventoryManagement.Domain.Model.Aggregates.Inventory", b =>
+                {
+                    b.Navigation("Movements");
+
+                    b.Navigation("StockItems");
                 });
 #pragma warning restore 612, 618
         }
