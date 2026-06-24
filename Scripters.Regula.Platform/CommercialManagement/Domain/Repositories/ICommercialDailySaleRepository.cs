@@ -5,4 +5,6 @@ namespace Scripters.Regula.Platform.CommercialManagement.Domain.Repositories;
 
 public interface ICommercialDailySaleRepository : IBaseRepository<CommercialDailySale>
 {
+    Task<IEnumerable<CommercialDailySale>> ListOrderedByCreatedAtDescendingAsync(
+        CancellationToken cancellationToken = default);
 }
