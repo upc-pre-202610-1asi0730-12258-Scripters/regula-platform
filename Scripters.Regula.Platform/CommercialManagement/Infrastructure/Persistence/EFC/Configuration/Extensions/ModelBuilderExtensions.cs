@@ -56,5 +56,37 @@ public static class ModelBuilderExtensions
             .HasOne(payment => payment.CustomerDebt)
             .WithMany()
             .HasForeignKey(payment => payment.CustomerDebtId);
+        
+        builder.Entity<CommercialDailySale>().ToTable("commercial_daily_sales");
+        builder.Entity<CommercialDailySale>().HasKey(sale => sale.Id);
+        builder.Entity<CommercialDailySale>().Property(sale => sale.Id).IsRequired().ValueGeneratedOnAdd();
+        builder.Entity<CommercialDailySale>().Property(sale => sale.TransactionCode).IsRequired().HasMaxLength(20);
+        builder.Entity<CommercialDailySale>().Property(sale => sale.CylinderTypeId).IsRequired().HasMaxLength(20);
+        builder.Entity<CommercialDailySale>().Property(sale => sale.CylinderType).IsRequired().HasMaxLength(50);
+        builder.Entity<CommercialDailySale>().Property(sale => sale.Quantity).IsRequired();
+        builder.Entity<CommercialDailySale>().Property(sale => sale.UnitPrice).IsRequired().HasPrecision(10, 2);
+        builder.Entity<CommercialDailySale>().Property(sale => sale.TotalAmount).IsRequired().HasPrecision(10, 2);
+        builder.Entity<CommercialDailySale>().Property(sale => sale.CustomerName).HasMaxLength(100);
+        builder.Entity<CommercialDailySale>().Property(sale => sale.DistributorName).IsRequired().HasMaxLength(100);
+
+        builder.Entity<CommercialDailySale>()
+            .Property(sale => sale.PaymentType)
+            .IsRequired()
+            .HasConversion(
+                paymentType => paymentType.ToString().ToUpperInvariant(),
+                paymentType => Enum.Parse<ECommercialPaymentType>(paymentType, true));
+
+        builder.Entity<CommercialDailySale>()
+            .Property(sale => sale.Status)
+            .IsRequired()
+            .HasConversion(
+                status => status.ToString().ToUpperInvariant(),
+                status => Enum.Parse<ECommercialSaleStatus>(status, true));
+
+        builder.Entity<CommercialDailySale>()
+            .HasOne(sale => sale.Customer)
+            .WithMany()
+            .HasForeignKey(sale => sale.CustomerId)
+            .OnDelete(DeleteBehavior.Restrict);
     }
 }
