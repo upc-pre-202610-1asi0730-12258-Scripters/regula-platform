@@ -20,6 +20,12 @@ using Scripters.Regula.Platform.Iam.Domain.Repositories;
 using Scripters.Regula.Platform.Iam.Infrastructure.Hashing.BCrypt;
 using Scripters.Regula.Platform.Iam.Infrastructure.Persistence.EFC.Repositories;
 using Scripters.Regula.Platform.Iam.Infrastructure.Tokens.JWT;
+using Scripters.Regula.Platform.InventoryManagement.Application.CommandServices;
+using Scripters.Regula.Platform.InventoryManagement.Application.Internal.CommandServices;
+using Scripters.Regula.Platform.InventoryManagement.Application.Internal.QueryServices;
+using Scripters.Regula.Platform.InventoryManagement.Application.QueryServices;
+using Scripters.Regula.Platform.InventoryManagement.Domain.Repositories;
+using Scripters.Regula.Platform.InventoryManagement.Infrastructure.Persistence.EntityFrameworkCore.Repositories;
 using Scripters.Regula.Platform.Shared.Domain.Repositories;
 using Scripters.Regula.Platform.Shared.Infrastructure.Persistence.EFC.Configuration;
 using Scripters.Regula.Platform.Shared.Infrastructure.Persistence.EFC.Repositories;
@@ -28,6 +34,16 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container
 builder.Services.AddControllers();
+
+// Add CORS Policy
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll",
+        policy => policy.AllowAnyOrigin()
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+});
+
 
 // Configure Database
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
@@ -49,6 +65,12 @@ builder.Services.AddDbContext<AppDbContext>((serviceProvider, options) =>
     if (builder.Environment.IsDevelopment())
         options.EnableSensitiveDataLogging();
 });
+
+// Inventory Management Bounded Context
+builder.Services.AddScoped<IInventoryRepository, InventoryRepository>();
+builder.Services.AddScoped<IInventoryCommandService, InventoryCommandService>();
+builder.Services.AddScoped<IInventoryQueryService, InventoryQueryService>();
+
 // Delivery Tracking Bounded Context
 builder.Services.AddScoped<IDeliveryRepository, DeliveryRepository>();
 builder.Services.AddScoped<IDriverLocationRepository, DriverLocationRepository>();
@@ -64,6 +86,7 @@ builder.Services.AddScoped<ICommercialDebtPaymentRepository, CommercialDebtPayme
 builder.Services.AddScoped<ICommercialDailySaleRepository, CommercialDailySaleRepository>();
 builder.Services.AddScoped<IDailySaleCommandService, DailySaleCommandService>();
 builder.Services.AddScoped<IDailySaleQueryService, DailySaleQueryService>();
+
 // IAM Bounded Context
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IUserCommandService, UserCommandService>();
@@ -103,7 +126,11 @@ var app = builder.Build();
 // Configure the HTTP request pipeline
     app.UseSwagger();
     app.UseSwaggerUI();
+
 app.UseHttpsRedirection();
+
+// Apply CORS Policy
+app.UseCors("AllowAll");
 
 app.UseAuthentication();
 app.UseAuthorization();
